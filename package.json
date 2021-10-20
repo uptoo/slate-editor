@@ -8,9 +8,11 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "dependencies": {
+  "peerDependencied": {
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+  },
+  "dependencies": {
     "slate": "^0.66.5",
     "slate-history": "^0.66.0",
     "slate-react": "^0.66.4"
