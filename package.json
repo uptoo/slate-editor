@@ -1,24 +1,19 @@
 {
   "name": "uptoo-slate-editor",
   "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
-    "slate": "^0.66.5",
-    "slate-history": "^0.66.0",
-    "slate-react": "^0.66.4",
-    "web-vitals": "^1.1.2"
-  },
+  "private": false,
   "scripts": {
     "start": "react-scripts start",
     "build": "babel src/component -d dist --copy-files",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+  },
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "slate": "^0.66.5",
+    "slate-history": "^0.66.0",
+    "slate-react": "^0.66.4"
   },
   "eslintConfig": {
     "extends": [
@@ -33,9 +28,11 @@
     ]
   },
   "devDependencies": {
+    "react-scripts": "4.0.3",
     "@babel/cli": "^7.15.7",
     "@babel/preset-env": "^7.15.8",
-    "@babel/preset-react": "^7.14.5"
+    "@babel/preset-react": "^7.14.5",
+    "web-vitals": "^1.1.2"
   },
   "browserslist": {
     "production": [
