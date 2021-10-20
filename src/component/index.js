@@ -3,8 +3,6 @@ import { Editor, createEditor, Transforms, Range, Element as SlateElement, } fro
 import { withHistory } from 'slate-history'
 import { Slate, Editable, withReact, useSlate, useSelected, useFocused, ReactEditor } from 'slate-react'
 
-import './style.css'
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }

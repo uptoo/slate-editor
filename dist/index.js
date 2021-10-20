@@ -4,7 +4,6 @@ import React, { useMemo, useState, useCallback, useRef, useEffect } from 'react'
 import { Editor, createEditor, Transforms, Range, Element as SlateElement } from 'slate';
 import { withHistory } from 'slate-history';
 import { Slate, Editable, withReact, useSlate, useSelected, useFocused, ReactEditor } from 'slate-react';
-import './style.css';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
