@@ -22,7 +22,6 @@ export const Button = React.forwardRef(({
 
 export default function MyEditor({
   initialContent = null,
-  content = null,
   onChange,
   mentions = [],
   onMention,
@@ -31,10 +30,6 @@ export default function MyEditor({
   minHeight = 0,
   ...props
 }) {
-
-  if (initialContent && content) {
-    console.error('initialContent & content ne peuvent pas être renseignés en même temps')
-  }
   // Editeur
   const editor = useMemo(() => withMentions(withReact(withHistory(createEditor()))), [])
 
@@ -109,11 +104,15 @@ export default function MyEditor({
   }, [])
 
   useEffect(() => {
-      setValue(content || [{ children: [{ text: '' }] }])
-  }, [content])
+    if (readOnly) {
+      setValue(readOnly)
+    } else {
+      setValue([{ children: [{ text: '' }] }])
+    }
+  }, [readOnly])
 
   useEffect(() => {
-    if (onChange && !content) {
+    if (onChange) {
       onChange(value)
     }
   }, [value])
