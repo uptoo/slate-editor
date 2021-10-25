@@ -109,9 +109,7 @@ export default function MyEditor({
   }, [])
 
   useEffect(() => {
-    if (content) {
-      setValue(content)
-    }
+      setValue(content || [{ children: [{ text: '' }] }])
   }, [content])
 
   useEffect(() => {
