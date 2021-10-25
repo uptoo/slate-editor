@@ -17,7 +17,7 @@ var _slateHistory = require("slate-history");
 var _slateReact = require("slate-react");
 
 var _excluded = ["className", "active", "reversed"],
-    _excluded2 = ["initialContent", "onChange", "mentions", "onMention", "placeholder", "readOnly", "minHeight"];
+    _excluded2 = ["initialValue", "onChange", "mentions", "onMention", "placeholder", "readOnly", "minHeight"];
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -64,8 +64,8 @@ var Button = /*#__PURE__*/_react.default.forwardRef(function (_ref, ref) {
 exports.Button = Button;
 
 function MyEditor(_ref2) {
-  var _ref2$initialContent = _ref2.initialContent,
-      initialContent = _ref2$initialContent === void 0 ? null : _ref2$initialContent,
+  var _ref2$initialValue = _ref2.initialValue,
+      initialValue = _ref2$initialValue === void 0 ? null : _ref2$initialValue,
       onChange = _ref2.onChange,
       _ref2$mentions = _ref2.mentions,
       mentions = _ref2$mentions === void 0 ? [] : _ref2$mentions,
@@ -83,7 +83,7 @@ function MyEditor(_ref2) {
     return withMentions((0, _slateReact.withReact)((0, _slateHistory.withHistory)((0, _slate.createEditor)())));
   }, []); // Valeur du contenu
 
-  var _useState = (0, _react.useState)(initialContent || [{
+  var _useState = (0, _react.useState)(initialValue || [{
     children: [{
       text: ''
     }]

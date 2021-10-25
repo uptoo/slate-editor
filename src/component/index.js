@@ -21,7 +21,7 @@ export const Button = React.forwardRef(({
 ))
 
 export default function MyEditor({
-  initialContent = null,
+  initialValue = null,
   onChange,
   mentions = [],
   onMention,
@@ -34,7 +34,7 @@ export default function MyEditor({
   const editor = useMemo(() => withMentions(withReact(withHistory(createEditor()))), [])
 
   // Valeur du contenu
-  const [value, setValue] = useState(initialContent || [{ children: [{ text: '' }] }])
+  const [value, setValue] = useState(initialValue || [{ children: [{ text: '' }] }])
 
   // Pour les mentions
   const ref = useRef()
