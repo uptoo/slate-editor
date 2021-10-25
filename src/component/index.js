@@ -21,7 +21,8 @@ export const Button = React.forwardRef(({
 ))
 
 export default function MyEditor({
-  initialValue = [{ children: [{ text: '' }] }],
+  initialContent = null,
+  content = null,
   onChange,
   mentions = [],
   onMention,
@@ -31,11 +32,14 @@ export default function MyEditor({
   ...props
 }) {
 
+  if (initialContent && content) {
+    console.error('initialContent & content ne peuvent pas être renseignés en même temps')
+  }
   // Editeur
   const editor = useMemo(() => withMentions(withReact(withHistory(createEditor()))), [])
 
   // Valeur du contenu
-  const [value, setValue] = useState(initialValue)
+  const [value, setValue] = useState(initialContent || [{ children: [{ text: '' }] }])
 
   // Pour les mentions
   const ref = useRef()
@@ -105,6 +109,10 @@ export default function MyEditor({
   }, [])
 
   useEffect(() => {
+    setValue(content)
+  }, [content])
+
+  useEffect(() => {
     if (onChange) {
       onChange(value)
     }
@@ -117,7 +125,7 @@ export default function MyEditor({
     >
       <Slate
         editor={editor}
-        value={value}
+        value={value} 
         onChange={value => {
           setValue(value)
           const { selection } = editor

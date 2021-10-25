@@ -17,7 +17,7 @@ var _slateHistory = require("slate-history");
 var _slateReact = require("slate-react");
 
 var _excluded = ["className", "active", "reversed"],
-    _excluded2 = ["initialValue", "onChange", "mentions", "onMention", "placeholder", "readOnly", "minHeight"];
+    _excluded2 = ["initialContent", "content", "onChange", "mentions", "onMention", "placeholder", "readOnly", "minHeight"];
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -64,12 +64,10 @@ var Button = /*#__PURE__*/_react.default.forwardRef(function (_ref, ref) {
 exports.Button = Button;
 
 function MyEditor(_ref2) {
-  var _ref2$initialValue = _ref2.initialValue,
-      initialValue = _ref2$initialValue === void 0 ? [{
-    children: [{
-      text: ''
-    }]
-  }] : _ref2$initialValue,
+  var _ref2$initialContent = _ref2.initialContent,
+      initialContent = _ref2$initialContent === void 0 ? null : _ref2$initialContent,
+      _ref2$content = _ref2.content,
+      content = _ref2$content === void 0 ? null : _ref2$content,
       onChange = _ref2.onChange,
       _ref2$mentions = _ref2.mentions,
       mentions = _ref2$mentions === void 0 ? [] : _ref2$mentions,
@@ -82,12 +80,20 @@ function MyEditor(_ref2) {
       minHeight = _ref2$minHeight === void 0 ? 0 : _ref2$minHeight,
       props = _objectWithoutProperties(_ref2, _excluded2);
 
-  // Editeur
+  if (initialContent && content) {
+    console.error('initialContent & content ne peuvent pas être renseignés en même temps');
+  } // Editeur
+
+
   var editor = (0, _react.useMemo)(function () {
     return withMentions((0, _slateReact.withReact)((0, _slateHistory.withHistory)((0, _slate.createEditor)())));
   }, []); // Valeur du contenu
 
-  var _useState = (0, _react.useState)(initialValue),
+  var _useState = (0, _react.useState)(initialContent || [{
+    children: [{
+      text: ''
+    }]
+  }]),
       _useState2 = _slicedToArray(_useState, 2),
       value = _useState2[0],
       setValue = _useState2[1]; // Pour les mentions
@@ -176,6 +182,9 @@ function MyEditor(_ref2) {
     var editorEl = document.querySelector('[data-slate-editor="true"]');
     editorEl.style.minHeight = "".concat(minHeight, "px");
   }, []);
+  (0, _react.useEffect)(function () {
+    setValue(content);
+  }, [content]);
   (0, _react.useEffect)(function () {
     if (onChange) {
       onChange(value);
