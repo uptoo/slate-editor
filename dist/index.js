@@ -186,7 +186,7 @@ function MyEditor(_ref2) {
     setValue(content);
   }, [content]);
   (0, _react.useEffect)(function () {
-    if (onChange) {
+    if (onChange && !content) {
       onChange(value);
     }
   }, [value]);

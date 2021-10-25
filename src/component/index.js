@@ -113,7 +113,7 @@ export default function MyEditor({
   }, [content])
 
   useEffect(() => {
-    if (onChange) {
+    if (onChange && !content) {
       onChange(value)
     }
   }, [value])
