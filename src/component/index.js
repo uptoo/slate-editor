@@ -106,8 +106,6 @@ export default function MyEditor({
   useEffect(() => {
     if (readOnly) {
       setValue(readOnly)
-    } else {
-      setValue([{ children: [{ text: '' }] }])
     }
   }, [readOnly])
 

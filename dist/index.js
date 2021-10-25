@@ -179,12 +179,6 @@ function MyEditor(_ref2) {
   (0, _react.useEffect)(function () {
     if (readOnly) {
       setValue(readOnly);
-    } else {
-      setValue([{
-        children: [{
-          text: ''
-        }]
-      }]);
     }
   }, [readOnly]);
   (0, _react.useEffect)(function () {
