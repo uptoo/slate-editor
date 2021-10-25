@@ -183,7 +183,9 @@ function MyEditor(_ref2) {
     editorEl.style.minHeight = "".concat(minHeight, "px");
   }, []);
   (0, _react.useEffect)(function () {
-    setValue(content);
+    if (content) {
+      setValue(content);
+    }
   }, [content]);
   (0, _react.useEffect)(function () {
     if (onChange && !content) {

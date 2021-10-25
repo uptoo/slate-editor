@@ -109,7 +109,9 @@ export default function MyEditor({
   }, [])
 
   useEffect(() => {
-    setValue(content)
+    if (content) {
+      setValue(content)
+    }
   }, [content])
 
   useEffect(() => {
