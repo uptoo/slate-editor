@@ -40,6 +40,9 @@ export default function MyEditor({
     setValue(initialValue)
   }, [initialValue])
 
+  console.log('initialValue', initialValue);
+  console.log('value', value);
+
   // Pour les mentions
   const ref = useRef()
   const [target, setTarget] = useState()
@@ -158,19 +161,19 @@ export default function MyEditor({
           <div className="editor-toolbar">
             <div>
               <MarkButton format="bold">
-                <i class="editor-icon icon-bold">&#xe800;</i>
+                <i className="editor-icon icon-bold">&#xe800;</i>
               </MarkButton>
               <MarkButton format="italic">
-                <i class="editor-icon icon-italic">&#xe801;</i>
+                <i className="editor-icon icon-italic">&#xe801;</i>
               </MarkButton>
               <MarkButton format="underline">
-                <i class="editor-icon icon-underline">&#xf0cd;</i>
+                <i className="editor-icon icon-underline">&#xf0cd;</i>
               </MarkButton>
               <BlockButton format="bulleted-list">
-                <i class="editor-icon icon-list-bullet">&#xf0ca;</i>
+                <i className="editor-icon icon-list-bullet">&#xf0ca;</i>
               </BlockButton>
               <BlockButton format="numbered-list">
-                <i class="editor-icon icon-list-numbered">&#xf0cb;</i>
+                <i className="editor-icon icon-list-numbered">&#xf0cb;</i>
               </BlockButton>
             </div>
           </div>
