@@ -25,7 +25,7 @@ export default function MyEditor({
   onChange,
   mentions = [],
   onMention,
-  placeholder = "Contenu de votre message",
+  placeholder = 'Contenu de votre message',
   readOnly = false,
   minHeight = 0,
   ...props
@@ -35,13 +35,6 @@ export default function MyEditor({
 
   // Valeur du contenu
   const [value, setValue] = useState(initialValue || [{ children: [{ text: '' }] }])
-
-  useEffect(() => {
-    setValue(initialValue)
-  }, [initialValue])
-
-  console.log('initialValue', initialValue);
-  console.log('value', value);
 
   // Pour les mentions
   const ref = useRef()
@@ -122,9 +115,15 @@ export default function MyEditor({
     }
   }, [value])
 
+  useEffect(() => {
+    if (onChange && JSON.stringify(props.value) !== JSON.stringify(value)) {
+      setValue(props.value)
+    }
+  }, [props.value])
+
   return (
     <div 
-      className={classNames(!readOnly ? "editor-bordered" : "")}
+      className={classNames(!readOnly ? 'editor-bordered' : '')}
       style={{ minHeight: minHeight + 85 }}
     >
       <Slate
@@ -180,7 +179,7 @@ export default function MyEditor({
         )}
         <Editable
           readOnly={readOnly}
-          className={readOnly ? "" : "editor-editable"}
+          className={readOnly ? '' : 'editor-editable'}
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           onKeyDown={onKeyDown}

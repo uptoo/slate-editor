@@ -238,23 +238,23 @@ function MyEditor(_ref2) {
   }, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(MarkButton, {
     format: "bold"
   }, /*#__PURE__*/_react.default.createElement("i", {
-    class: "editor-icon icon-bold"
+    className: "editor-icon icon-bold"
   }, "\uE800")), /*#__PURE__*/_react.default.createElement(MarkButton, {
     format: "italic"
   }, /*#__PURE__*/_react.default.createElement("i", {
-    class: "editor-icon icon-italic"
+    className: "editor-icon icon-italic"
   }, "\uE801")), /*#__PURE__*/_react.default.createElement(MarkButton, {
     format: "underline"
   }, /*#__PURE__*/_react.default.createElement("i", {
-    class: "editor-icon icon-underline"
+    className: "editor-icon icon-underline"
   }, "\uF0CD")), /*#__PURE__*/_react.default.createElement(BlockButton, {
     format: "bulleted-list"
   }, /*#__PURE__*/_react.default.createElement("i", {
-    class: "editor-icon icon-list-bullet"
+    className: "editor-icon icon-list-bullet"
   }, "\uF0CA")), /*#__PURE__*/_react.default.createElement(BlockButton, {
     format: "numbered-list"
   }, /*#__PURE__*/_react.default.createElement("i", {
-    class: "editor-icon icon-list-numbered"
+    className: "editor-icon icon-list-numbered"
   }, "\uF0CB")))), /*#__PURE__*/_react.default.createElement(_slateReact.Editable, {
     readOnly: readOnly,
     className: readOnly ? "" : "editor-editable",
