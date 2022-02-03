@@ -1,7 +1,7 @@
-import React, { useMemo, useState, useCallback, useRef, useEffect } from 'react'
-import { Editor, createEditor, Transforms, Range, Element as SlateElement, } from 'slate'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { createEditor, Editor, Element as SlateElement, Range, Transforms } from 'slate'
 import { withHistory } from 'slate-history'
-import { Slate, Editable, withReact, useSlate, useSelected, useFocused, ReactEditor } from 'slate-react'
+import { Editable, ReactEditor, Slate, useFocused, useSelected, useSlate, withReact } from 'slate-react'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -35,6 +35,10 @@ export default function MyEditor({
 
   // Valeur du contenu
   const [value, setValue] = useState(initialValue || [{ children: [{ text: '' }] }])
+
+  useEffect(() => {
+    setValue(initialValue)
+  }, [initialValue])
 
   // Pour les mentions
   const ref = useRef()
