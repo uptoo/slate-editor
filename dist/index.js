@@ -1,6 +1,6 @@
 "use strict";
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -71,7 +71,7 @@ function MyEditor(_ref2) {
       mentions = _ref2$mentions === void 0 ? [] : _ref2$mentions,
       onMention = _ref2.onMention,
       _ref2$placeholder = _ref2.placeholder,
-      placeholder = _ref2$placeholder === void 0 ? "Contenu de votre message" : _ref2$placeholder,
+      placeholder = _ref2$placeholder === void 0 ? 'Contenu de votre message' : _ref2$placeholder,
       _ref2$readOnly = _ref2.readOnly,
       readOnly = _ref2$readOnly === void 0 ? false : _ref2$readOnly,
       _ref2$minHeight = _ref2.minHeight,
@@ -186,8 +186,13 @@ function MyEditor(_ref2) {
       onChange(value);
     }
   }, [value]);
+  (0, _react.useEffect)(function () {
+    if (onChange && JSON.stringify(props.value) !== JSON.stringify(value)) {
+      setValue(props.value);
+    }
+  }, [props.value]);
   return /*#__PURE__*/_react.default.createElement("div", {
-    className: classNames(!readOnly ? "editor-bordered" : ""),
+    className: classNames(!readOnly ? 'editor-bordered' : ''),
     style: {
       minHeight: minHeight + 85
     }
@@ -257,7 +262,7 @@ function MyEditor(_ref2) {
     className: "editor-icon icon-list-numbered"
   }, "\uF0CB")))), /*#__PURE__*/_react.default.createElement(_slateReact.Editable, {
     readOnly: readOnly,
-    className: readOnly ? "" : "editor-editable",
+    className: readOnly ? '' : 'editor-editable',
     renderElement: renderElement,
     renderLeaf: renderLeaf,
     onKeyDown: onKeyDown,
