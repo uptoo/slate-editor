@@ -187,7 +187,7 @@ function MyEditor(_ref2) {
     }
   }, [value]);
   (0, _react.useEffect)(function () {
-    if (onChange && JSON.stringify(props.value) !== JSON.stringify(value)) {
+    if (onChange && props.value && JSON.stringify(props.value) !== JSON.stringify(value)) {
       setValue(props.value);
     }
   }, [props.value]);
