@@ -1,6 +1,6 @@
 "use strict";
 
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -17,7 +17,7 @@ var _slateHistory = require("slate-history");
 var _slateReact = require("slate-react");
 
 var _excluded = ["className", "active", "reversed"],
-    _excluded2 = ["initialValue", "onChange", "mentions", "onMention", "placeholder", "readOnly", "minHeight"];
+    _excluded2 = ["initialValue", "onChange", "mentions", "onMention", "tags", "placeholder", "readOnly", "minHeight"];
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -70,6 +70,8 @@ function MyEditor(_ref2) {
       _ref2$mentions = _ref2.mentions,
       mentions = _ref2$mentions === void 0 ? [] : _ref2$mentions,
       onMention = _ref2.onMention,
+      _ref2$tags = _ref2.tags,
+      tags = _ref2$tags === void 0 ? [] : _ref2$tags,
       _ref2$placeholder = _ref2.placeholder,
       placeholder = _ref2$placeholder === void 0 ? 'Contenu de votre message' : _ref2$placeholder,
       _ref2$readOnly = _ref2.readOnly,
@@ -80,7 +82,7 @@ function MyEditor(_ref2) {
 
   // Editeur
   var editor = (0, _react.useMemo)(function () {
-    return withMentions((0, _slateReact.withReact)((0, _slateHistory.withHistory)((0, _slate.createEditor)())));
+    return withTags(withMentions((0, _slateReact.withReact)((0, _slateHistory.withHistory)((0, _slate.createEditor)()))));
   }, []); // Valeur du contenu
 
   var _useState = (0, _react.useState)(initialValue || [{
@@ -93,22 +95,40 @@ function MyEditor(_ref2) {
       setValue = _useState2[1]; // Pour les mentions
 
 
-  var ref = (0, _react.useRef)();
+  var mentionRef = (0, _react.useRef)();
 
   var _useState3 = (0, _react.useState)(),
       _useState4 = _slicedToArray(_useState3, 2),
-      target = _useState4[0],
-      setTarget = _useState4[1];
+      mentionTarget = _useState4[0],
+      setMentionTarget = _useState4[1];
 
   var _useState5 = (0, _react.useState)(0),
       _useState6 = _slicedToArray(_useState5, 2),
-      index = _useState6[0],
-      setIndex = _useState6[1];
+      mentionIndex = _useState6[0],
+      setMentionIndex = _useState6[1];
 
   var _useState7 = (0, _react.useState)(''),
       _useState8 = _slicedToArray(_useState7, 2),
-      search = _useState8[0],
-      setSearch = _useState8[1]; // Fonctions de render
+      mentionSearch = _useState8[0],
+      setMentionSearch = _useState8[1]; // Pour les tags
+
+
+  var tagRef = (0, _react.useRef)();
+
+  var _useState9 = (0, _react.useState)(),
+      _useState10 = _slicedToArray(_useState9, 2),
+      tagTarget = _useState10[0],
+      setTagTarget = _useState10[1];
+
+  var _useState11 = (0, _react.useState)(0),
+      _useState12 = _slicedToArray(_useState11, 2),
+      tagIndex = _useState12[0],
+      setTagIndex = _useState12[1];
+
+  var _useState13 = (0, _react.useState)(''),
+      _useState14 = _slicedToArray(_useState13, 2),
+      tagSearch = _useState14[0],
+      setTagSearch = _useState14[1]; // Fonctions de render
 
 
   var renderElement = (0, _react.useCallback)(function (props) {
@@ -118,58 +138,109 @@ function MyEditor(_ref2) {
     return /*#__PURE__*/_react.default.createElement(Leaf, props);
   }, []);
   var users = mentions.filter(function (m) {
-    return m.firstName.toLowerCase().startsWith(search.toLowerCase());
+    return m.firstName.toLowerCase().startsWith(mentionSearch.toLowerCase());
+  }).slice(0, 10);
+  var availableTags = tags.filter(function (t) {
+    return t.value.toLowerCase().startsWith(tagSearch.toLowerCase());
   }).slice(0, 10);
   var onKeyDown = (0, _react.useCallback)(function (event) {
-    if (target) {
+    if (mentionTarget) {
       switch (event.key) {
         case 'ArrowDown':
           event.preventDefault();
-          var prevIndex = index >= users.length - 1 ? 0 : index + 1;
-          setIndex(prevIndex);
+          var prevIndex = mentionIndex >= users.length - 1 ? 0 : mentionIndex + 1;
+          setMentionIndex(prevIndex);
           break;
 
         case 'ArrowUp':
           event.preventDefault();
-          var nextIndex = index <= 0 ? users.length - 1 : index - 1;
-          setIndex(nextIndex);
+          var nextIndex = mentionIndex <= 0 ? users.length - 1 : mentionIndex - 1;
+          setMentionIndex(nextIndex);
           break;
 
         case 'Tab':
         case 'Enter':
           event.preventDefault();
 
-          _slate.Transforms.select(editor, target);
+          _slate.Transforms.select(editor, mentionTarget);
 
-          insertMention(editor, users[index]);
+          insertMention(editor, users[mentionIndex]);
 
           if (onMention) {
-            onMention(users[index]);
+            onMention(users[mentionIndex]);
           }
 
-          setTarget(null);
+          setMentionTarget(null);
           break;
 
         case 'Escape':
           event.preventDefault();
-          setTarget(null);
+          setMentionTarget(null);
           break;
 
         default:
       }
     }
-  }, [index, search, target]);
-  (0, _react.useEffect)(function () {
-    if (target && users.length > 0) {
-      var el = ref.current;
 
-      var domRange = _slateReact.ReactEditor.toDOMRange(editor, target);
+    if (tagTarget) {
+      switch (event.key) {
+        case 'ArrowDown':
+          event.preventDefault();
+
+          var _prevIndex = tagIndex >= availableTags.length - 1 ? 0 : tagIndex + 1;
+
+          setTagIndex(_prevIndex);
+          break;
+
+        case 'ArrowUp':
+          event.preventDefault();
+
+          var _nextIndex = tagIndex <= 0 ? availableTags.length - 1 : tagIndex - 1;
+
+          setTagIndex(_nextIndex);
+          break;
+
+        case 'Tab':
+        case 'Enter':
+          event.preventDefault();
+
+          _slate.Transforms.select(editor, tagTarget);
+
+          insertTag(editor, availableTags[tagIndex]);
+          setTagTarget(null);
+          break;
+
+        case 'Escape':
+          event.preventDefault();
+          setTagTarget(null);
+          break;
+
+        default:
+      }
+    }
+  }, [mentionIndex, mentionSearch, mentionTarget, tagIndex, tagSearch, tagTarget]);
+  (0, _react.useEffect)(function () {
+    if (mentionTarget && users.length > 0) {
+      var el = mentionRef.current;
+
+      var domRange = _slateReact.ReactEditor.toDOMRange(editor, mentionTarget);
 
       var rect = domRange.getBoundingClientRect();
       el.style.top = "".concat(rect.top + window.pageYOffset + 24, "px");
       el.style.left = "".concat(rect.left + window.pageXOffset, "px");
     }
-  }, [users.length, editor, index, search, target]);
+  }, [users.length, editor, mentionIndex, mentionSearch, mentionTarget]);
+  (0, _react.useEffect)(function () {
+    if (tagTarget && users.length > 0) {
+      var el = tagRef.current;
+
+      var domRange = _slateReact.ReactEditor.toDOMRange(editor, tagTarget);
+
+      var rect = domRange.getBoundingClientRect();
+      el.style.top = "".concat(rect.top + window.pageYOffset + 24, "px");
+      el.style.left = "".concat(rect.left + window.pageXOffset, "px");
+    }
+  }, [users.length, editor, tagIndex, tagSearch, tagTarget]);
   (0, _react.useEffect)(function () {
     _slateReact.ReactEditor.focus(editor);
 
@@ -218,7 +289,8 @@ function MyEditor(_ref2) {
 
         var beforeText = beforeRange && _slate.Editor.string(editor, beforeRange);
 
-        var beforeMatch = beforeText && beforeText.match(/^@(\w+)$/);
+        var beforeMention = beforeText && beforeText.match(/^@(\w+)$/);
+        var beforeTag = beforeText && beforeText.match(/^{(\w+)$/);
 
         var after = _slate.Editor.after(editor, start);
 
@@ -228,15 +300,23 @@ function MyEditor(_ref2) {
 
         var afterMatch = afterText.match(/^(\s|$)/);
 
-        if (beforeMatch && afterMatch) {
-          setTarget(beforeRange);
-          setSearch(beforeMatch[1]);
-          setIndex(0);
+        if (beforeMention && afterMatch) {
+          setMentionTarget(beforeRange);
+          setMentionSearch(beforeMention[1]);
+          setMentionIndex(0);
+          return;
+        }
+
+        if (beforeTag && afterMatch) {
+          setTagTarget(beforeRange);
+          setTagSearch(beforeTag[1]);
+          setTagIndex(0);
           return;
         }
       }
 
-      setTarget(null);
+      setMentionTarget(null);
+      setTagTarget(null);
     }
   }, !readOnly && /*#__PURE__*/_react.default.createElement("div", {
     className: "editor-toolbar"
@@ -267,8 +347,8 @@ function MyEditor(_ref2) {
     renderLeaf: renderLeaf,
     onKeyDown: onKeyDown,
     placeholder: placeholder
-  }), target && users.length > 0 && /*#__PURE__*/_react.default.createElement("div", {
-    ref: ref,
+  }), mentionTarget && users.length > 0 && /*#__PURE__*/_react.default.createElement("div", {
+    ref: mentionRef,
     style: {
       top: '-9999px',
       left: '-9999px',
@@ -286,9 +366,31 @@ function MyEditor(_ref2) {
       style: {
         padding: '1px 3px',
         borderRadius: '3px',
-        background: i === index ? '#B4D5FF' : 'transparent'
+        background: i === mentionIndex ? '#B4D5FF' : 'transparent'
       }
     }, user.firstName, " ", user.lastName);
+  })), tagTarget && /*#__PURE__*/_react.default.createElement("div", {
+    ref: tagRef,
+    style: {
+      top: '-9999px',
+      left: '-9999px',
+      position: 'fixed',
+      zIndex: 100,
+      padding: '3px',
+      background: 'white',
+      borderRadius: '4px',
+      boxShadow: '0 1px 5px rgba(0,0,0,.2)'
+    },
+    "data-cy": "tags-portal"
+  }, tags.map(function (tag, i) {
+    return /*#__PURE__*/_react.default.createElement("div", {
+      key: tag.value,
+      style: {
+        padding: '1px 3px',
+        borderRadius: '3px',
+        background: i === tagIndex ? '#B4D5FF' : 'transparent'
+      }
+    }, "{", tag.value, "} - ", tag.description);
   }))));
 }
 
@@ -397,6 +499,21 @@ var withMentions = function withMentions(editor) {
   return editor;
 };
 
+var withTags = function withTags(editor) {
+  var isInline = editor.isInline,
+      isVoid = editor.isVoid;
+
+  editor.isInline = function (element) {
+    return element.type === 'tag' ? true : isInline(element);
+  };
+
+  editor.isVoid = function (element) {
+    return element.type === 'tag' ? true : isVoid(element);
+  };
+
+  return editor;
+};
+
 var insertMention = function insertMention(editor, user) {
   var mention = {
     type: 'mention',
@@ -411,6 +528,20 @@ var insertMention = function insertMention(editor, user) {
   _slate.Transforms.move(editor);
 };
 
+var insertTag = function insertTag(editor, tag) {
+  var node = {
+    type: 'tag',
+    tag: tag,
+    children: [{
+      text: ''
+    }]
+  };
+
+  _slate.Transforms.insertNodes(editor, node);
+
+  _slate.Transforms.move(editor);
+};
+
 var Element = function Element(props) {
   var attributes = props.attributes,
       children = props.children,
@@ -419,6 +550,9 @@ var Element = function Element(props) {
   switch (element.type) {
     case 'mention':
       return /*#__PURE__*/_react.default.createElement(Mention, props);
+
+    case 'tag':
+      return /*#__PURE__*/_react.default.createElement(Tag, props);
 
     case 'block-quote':
       return /*#__PURE__*/_react.default.createElement("blockquote", attributes, children);
@@ -487,4 +621,26 @@ var Mention = function Mention(_ref6) {
       boxShadow: selected && focused ? '0 0 0 2px #B4D5FF' : 'none'
     }
   }), "@", element.user.firstName, " ", element.user.lastName, children);
+};
+
+var Tag = function Tag(_ref7) {
+  var attributes = _ref7.attributes,
+      children = _ref7.children,
+      element = _ref7.element;
+  var selected = (0, _slateReact.useSelected)();
+  var focused = (0, _slateReact.useFocused)();
+  return /*#__PURE__*/_react.default.createElement("span", _extends({}, attributes, {
+    contentEditable: false,
+    "data-cy": "tag-".concat(element.tag.value),
+    style: {
+      padding: '3px 3px 2px',
+      margin: '0 1px',
+      verticalAlign: 'baseline',
+      display: 'inline-block',
+      borderRadius: '4px',
+      backgroundColor: '#eee',
+      fontSize: '0.9em',
+      boxShadow: selected && focused ? '0 0 0 2px #B4D5FF' : 'none'
+    }
+  }), "{", element.tag.value, "}", children);
 };

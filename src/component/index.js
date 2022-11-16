@@ -25,75 +25,124 @@ export default function MyEditor({
   onChange,
   mentions = [],
   onMention,
+  tags = [],
   placeholder = 'Contenu de votre message',
   readOnly = false,
   minHeight = 0,
   ...props
 }) {
   // Editeur
-  const editor = useMemo(() => withMentions(withReact(withHistory(createEditor()))), [])
+  const editor = useMemo(() => withTags(withMentions(withReact(withHistory(createEditor())))), [])
 
   // Valeur du contenu
   const [value, setValue] = useState(initialValue || [{ children: [{ text: '' }] }])
 
   // Pour les mentions
-  const ref = useRef()
-  const [target, setTarget] = useState()
-  const [index, setIndex] = useState(0)
-  const [search, setSearch] = useState('')
+  const mentionRef = useRef()
+  const [mentionTarget, setMentionTarget] = useState()
+  const [mentionIndex, setMentionIndex] = useState(0)
+  const [mentionSearch, setMentionSearch] = useState('')
+
+  // Pour les tags
+  const tagRef = useRef()
+  const [tagTarget, setTagTarget] = useState()
+  const [tagIndex, setTagIndex] = useState(0)
+  const [tagSearch, setTagSearch] = useState('')
 
   // Fonctions de render
   const renderElement = useCallback(props => <Element {...props} />, [])
   const renderLeaf = useCallback(props => <Leaf {...props} />, [])
 
   const users = mentions.filter((m) =>
-    m.firstName.toLowerCase().startsWith(search.toLowerCase())
+    m.firstName.toLowerCase().startsWith(mentionSearch.toLowerCase())
+  ).slice(0, 10)
+
+  const availableTags = tags.filter((t) =>
+    t.value.toLowerCase().startsWith(tagSearch.toLowerCase())
   ).slice(0, 10)
 
   const onKeyDown = useCallback(
     event => {
-      if (target) {
+      if (mentionTarget) {
         switch (event.key) {
           case 'ArrowDown':
             event.preventDefault()
-            const prevIndex = index >= users.length - 1 ? 0 : index + 1
-            setIndex(prevIndex)
+            const prevIndex = mentionIndex >= users.length - 1 ? 0 : mentionIndex + 1
+            setMentionIndex(prevIndex)
             break
           case 'ArrowUp':
             event.preventDefault()
-            const nextIndex = index <= 0 ? users.length - 1 : index - 1
-            setIndex(nextIndex)
+            const nextIndex = mentionIndex <= 0 ? users.length - 1 : mentionIndex - 1
+            setMentionIndex(nextIndex)
             break
           case 'Tab':
           case 'Enter':
             event.preventDefault()
-            Transforms.select(editor, target)
-            insertMention(editor, users[index])
+            Transforms.select(editor, mentionTarget)
+            insertMention(editor, users[mentionIndex])
             if (onMention) {
-              onMention(users[index])
+              onMention(users[mentionIndex])
             }
-            setTarget(null)
+            setMentionTarget(null)
             break
           case 'Escape':
             event.preventDefault()
-            setTarget(null)
+            setMentionTarget(null)
+            break
+          default:
+        }
+      }
+
+      if (tagTarget) {
+        switch (event.key) {
+          case 'ArrowDown':
+            event.preventDefault()
+            const prevIndex = tagIndex >= availableTags.length - 1 ? 0 : tagIndex + 1
+            setTagIndex(prevIndex)
+            break
+          case 'ArrowUp':
+            event.preventDefault()
+            const nextIndex = tagIndex <= 0 ? availableTags.length - 1 : tagIndex - 1
+            setTagIndex(nextIndex)
+            break
+          case 'Tab':
+          case 'Enter':
+            event.preventDefault()
+            Transforms.select(editor, tagTarget)
+            insertTag(editor, availableTags[tagIndex])
+            setTagTarget(null)
+            break
+          case 'Escape':
+            event.preventDefault()
+            setTagTarget(null)
             break
           default:
         }
       }
     },
-    [index, search, target]
+    [mentionIndex, mentionSearch, mentionTarget, tagIndex, tagSearch, tagTarget]
   )
 
   useEffect(() => {
-    if (target && users.length > 0) {
-      const el = ref.current
-      const domRange = ReactEditor.toDOMRange(editor, target)
+    if (mentionTarget && users.length > 0) {
+      const el = mentionRef.current
+      const domRange = ReactEditor.toDOMRange(editor, mentionTarget)
       const rect = domRange.getBoundingClientRect()
       el.style.top = `${rect.top + window.pageYOffset + 24}px`
       el.style.left = `${rect.left + window.pageXOffset}px`
     }
-  }, [users.length, editor, index, search, target])
+  }, [users.length, editor, mentionIndex, mentionSearch, mentionTarget])
+
+
+  useEffect(() => {
+    if (tagTarget && users.length > 0) {
+      const el = tagRef.current
+      const domRange = ReactEditor.toDOMRange(editor, tagTarget)
+      const rect = domRange.getBoundingClientRect()
+      el.style.top = `${rect.top + window.pageYOffset + 24}px`
+      el.style.left = `${rect.left + window.pageXOffset}px`
+    }
+  }, [users.length, editor, tagIndex, tagSearch, tagTarget])
 
   useEffect(() => {
     ReactEditor.focus(editor)
@@ -139,21 +188,32 @@ export default function MyEditor({
             const before = wordBefore && Editor.before(editor, wordBefore)
             const beforeRange = before && Editor.range(editor, before, start)
             const beforeText = beforeRange && Editor.string(editor, beforeRange)
-            const beforeMatch = beforeText && beforeText.match(/^@(\w+)$/)
+
+            const beforeMention = beforeText && beforeText.match(/^@(\w+)$/)
+            const beforeTag = beforeText && beforeText.match(/^{(\w+)$/)
+
             const after = Editor.after(editor, start)
             const afterRange = Editor.range(editor, start, after)
             const afterText = Editor.string(editor, afterRange)
             const afterMatch = afterText.match(/^(\s|$)/)
 
-            if (beforeMatch && afterMatch) {
-              setTarget(beforeRange)
-              setSearch(beforeMatch[1])
-              setIndex(0)
+            if (beforeMention && afterMatch) {
+              setMentionTarget(beforeRange)
+              setMentionSearch(beforeMention[1])
+              setMentionIndex(0)
+              return
+            }
+
+            if (beforeTag && afterMatch) {
+              setTagTarget(beforeRange)
+              setTagSearch(beforeTag[1])
+              setTagIndex(0)
               return
             }
           }
 
-          setTarget(null)
+          setMentionTarget(null)
+          setTagTarget(null)
         }}
       >
         {!readOnly && (
@@ -185,9 +245,9 @@ export default function MyEditor({
           onKeyDown={onKeyDown}
           placeholder={placeholder}
         />
-        {target && users.length > 0 && (
+        {mentionTarget && users.length > 0 && (
           <div
-            ref={ref}
+            ref={mentionRef}
             style={{
               top: '-9999px',
               left: '-9999px',
@@ -206,10 +266,39 @@ export default function MyEditor({
                 style={{
                   padding: '1px 3px',
                   borderRadius: '3px',
-                  background: i === index ? '#B4D5FF' : 'transparent',
+                  background: i === mentionIndex ? '#B4D5FF' : 'transparent',
                 }}
               >
                 {user.firstName} {user.lastName}
+              </div>
+            ))}
+          </div>
+        )}
+        {tagTarget && (
+          <div
+            ref={tagRef}
+            style={{
+              top: '-9999px',
+              left: '-9999px',
+              position: 'fixed',
+              zIndex: 100,
+              padding: '3px',
+              background: 'white',
+              borderRadius: '4px',
+              boxShadow: '0 1px 5px rgba(0,0,0,.2)',
+            }}
+            data-cy="tags-portal"
+          >
+            {tags.map((tag, i) => (
+              <div
+                key={tag.value}
+                style={{
+                  padding: '1px 3px',
+                  borderRadius: '3px',
+                  background: i === tagIndex ? '#B4D5FF' : 'transparent',
+                }}
+              >
+                &#123;{tag.value}&#125; - {tag.description}
               </div>
             ))}
           </div>
@@ -320,6 +409,20 @@ const withMentions = editor => {
   return editor
 }
 
+const withTags = editor => {
+  const { isInline, isVoid } = editor
+
+  editor.isInline = element => {
+    return element.type === 'tag' ? true : isInline(element)
+  }
+
+  editor.isVoid = element => {
+    return element.type === 'tag' ? true : isVoid(element)
+  }
+
+  return editor
+}
+
 const insertMention = (editor, user) => {
   const mention = {
     type: 'mention',
@@ -330,11 +433,23 @@ const insertMention = (editor, user) => {
   Transforms.move(editor)
 }
 
+const insertTag = (editor, tag) => {
+  const node = {
+    type: 'tag',
+    tag,
+    children: [{ text: '' }],
+  }
+  Transforms.insertNodes(editor, node)
+  Transforms.move(editor)
+}
+
 const Element = (props) => {
   const { attributes, children, element } = props
   switch (element.type) {
     case 'mention':
       return <Mention {...props} />
+    case 'tag':
+      return <Tag {...props} />
     case 'block-quote':
       return <blockquote {...attributes}>{children}</blockquote>
     case 'bulleted-list':
@@ -392,6 +507,31 @@ const Mention = ({ attributes, children, element }) => {
       }}
     >
       @{element.user.firstName} {element.user.lastName}
+      {children}
+    </span>
+  )
+}
+
+const Tag = ({ attributes, children, element }) => {
+  const selected = useSelected()
+  const focused = useFocused()
+  return (
+    <span
+      {...attributes}
+      contentEditable={false}
+      data-cy={`tag-${element.tag.value}`}
+      style={{
+        padding: '3px 3px 2px',
+        margin: '0 1px',
+        verticalAlign: 'baseline',
+        display: 'inline-block',
+        borderRadius: '4px',
+        backgroundColor: '#eee',
+        fontSize: '0.9em',
+        boxShadow: selected && focused ? '0 0 0 2px #B4D5FF' : 'none',
+      }}
+    >
+      &#123;{element.tag.value}&#125;
       {children}
     </span>
   )
