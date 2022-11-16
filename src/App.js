@@ -13,6 +13,10 @@ function App() {
             firstName: 'Prénom',
             lastName: 'Nom'
           }]}
+          tags={[
+            { value: 'destPrenom', description: 'Prénom du destinataire' },
+            { value: 'destNom', description: 'Nom du destinataire' }
+          ]}
         />
       </div>
     </div>

@@ -95,12 +95,12 @@ export default function MyEditor({
 
       if (tagTarget) {
         switch (event.key) {
-          case 'ArrowDown':
+          case 'ArrowRight':
             event.preventDefault()
             const prevIndex = tagIndex >= availableTags.length - 1 ? 0 : tagIndex + 1
             setTagIndex(prevIndex)
             break
-          case 'ArrowUp':
+          case 'ArrowLeft':
             event.preventDefault()
             const nextIndex = tagIndex <= 0 ? availableTags.length - 1 : tagIndex - 1
             setTagIndex(nextIndex)
@@ -134,15 +134,15 @@ export default function MyEditor({
   }, [users.length, editor, mentionIndex, mentionSearch, mentionTarget])
 
 
-  useEffect(() => {
-    if (tagTarget && users.length > 0) {
-      const el = tagRef.current
-      const domRange = ReactEditor.toDOMRange(editor, tagTarget)
-      const rect = domRange.getBoundingClientRect()
-      el.style.top = `${rect.top + window.pageYOffset + 24}px`
-      el.style.left = `${rect.left + window.pageXOffset}px`
-    }
-  }, [users.length, editor, tagIndex, tagSearch, tagTarget])
+  // useEffect(() => {
+  //   if (tagTarget && availableTags.length > 0) {
+  //     const el = tagRef.current
+  //     const domRange = ReactEditor.toDOMRange(editor, tagTarget)
+  //     const rect = domRange.getBoundingClientRect()
+  //     el.style.top = `${rect.top + window.pageYOffset + 24}px`
+  //     el.style.left = `${rect.left + window.pageXOffset}px`
+  //   }
+  // }, [availableTags.length, editor, tagIndex, tagSearch, tagTarget])
 
   useEffect(() => {
     ReactEditor.focus(editor)
@@ -278,18 +278,14 @@ export default function MyEditor({
           <div
             ref={tagRef}
             style={{
-              top: '-9999px',
-              left: '-9999px',
-              position: 'fixed',
-              zIndex: 100,
               padding: '3px',
               background: 'white',
               borderRadius: '4px',
-              boxShadow: '0 1px 5px rgba(0,0,0,.2)',
+              display: 'flex'
             }}
             data-cy="tags-portal"
           >
-            {tags.map((tag, i) => (
+            {availableTags.map((tag, i) => (
               <div
                 key={tag.value}
                 style={{
@@ -298,7 +294,7 @@ export default function MyEditor({
                   background: i === tagIndex ? '#B4D5FF' : 'transparent',
                 }}
               >
-                &#123;{tag.value}&#125; - {tag.description}
+                &#123;{tag.value}&#125;
               </div>
             ))}
           </div>

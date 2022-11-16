@@ -184,7 +184,7 @@ function MyEditor(_ref2) {
 
     if (tagTarget) {
       switch (event.key) {
-        case 'ArrowDown':
+        case 'ArrowRight':
           event.preventDefault();
 
           var _prevIndex = tagIndex >= availableTags.length - 1 ? 0 : tagIndex + 1;
@@ -192,7 +192,7 @@ function MyEditor(_ref2) {
           setTagIndex(_prevIndex);
           break;
 
-        case 'ArrowUp':
+        case 'ArrowLeft':
           event.preventDefault();
 
           var _nextIndex = tagIndex <= 0 ? availableTags.length - 1 : tagIndex - 1;
@@ -229,18 +229,16 @@ function MyEditor(_ref2) {
       el.style.top = "".concat(rect.top + window.pageYOffset + 24, "px");
       el.style.left = "".concat(rect.left + window.pageXOffset, "px");
     }
-  }, [users.length, editor, mentionIndex, mentionSearch, mentionTarget]);
-  (0, _react.useEffect)(function () {
-    if (tagTarget && users.length > 0) {
-      var el = tagRef.current;
+  }, [users.length, editor, mentionIndex, mentionSearch, mentionTarget]); // useEffect(() => {
+  //   if (tagTarget && availableTags.length > 0) {
+  //     const el = tagRef.current
+  //     const domRange = ReactEditor.toDOMRange(editor, tagTarget)
+  //     const rect = domRange.getBoundingClientRect()
+  //     el.style.top = `${rect.top + window.pageYOffset + 24}px`
+  //     el.style.left = `${rect.left + window.pageXOffset}px`
+  //   }
+  // }, [availableTags.length, editor, tagIndex, tagSearch, tagTarget])
 
-      var domRange = _slateReact.ReactEditor.toDOMRange(editor, tagTarget);
-
-      var rect = domRange.getBoundingClientRect();
-      el.style.top = "".concat(rect.top + window.pageYOffset + 24, "px");
-      el.style.left = "".concat(rect.left + window.pageXOffset, "px");
-    }
-  }, [users.length, editor, tagIndex, tagSearch, tagTarget]);
   (0, _react.useEffect)(function () {
     _slateReact.ReactEditor.focus(editor);
 
@@ -372,17 +370,13 @@ function MyEditor(_ref2) {
   })), tagTarget && /*#__PURE__*/_react.default.createElement("div", {
     ref: tagRef,
     style: {
-      top: '-9999px',
-      left: '-9999px',
-      position: 'fixed',
-      zIndex: 100,
       padding: '3px',
       background: 'white',
       borderRadius: '4px',
-      boxShadow: '0 1px 5px rgba(0,0,0,.2)'
+      display: 'flex'
     },
     "data-cy": "tags-portal"
-  }, tags.map(function (tag, i) {
+  }, availableTags.map(function (tag, i) {
     return /*#__PURE__*/_react.default.createElement("div", {
       key: tag.value,
       style: {
@@ -390,7 +384,7 @@ function MyEditor(_ref2) {
         borderRadius: '3px',
         background: i === tagIndex ? '#B4D5FF' : 'transparent'
       }
-    }, "{", tag.value, "} - ", tag.description);
+    }, "{", tag.value, "}");
   }))));
 }
 
