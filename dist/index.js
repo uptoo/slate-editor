@@ -132,7 +132,9 @@ function MyEditor(_ref2) {
 
 
   var renderElement = (0, _react.useCallback)(function (props) {
-    return /*#__PURE__*/_react.default.createElement(Element, props);
+    return /*#__PURE__*/_react.default.createElement(Element, _extends({}, props, {
+      tags: tags
+    }));
   }, []);
   var renderLeaf = (0, _react.useCallback)(function (props) {
     return /*#__PURE__*/_react.default.createElement(Leaf, props);
@@ -525,9 +527,8 @@ var insertMention = function insertMention(editor, user) {
 var insertTag = function insertTag(editor, tag) {
   var node = {
     type: 'tag',
-    tag: tag,
     children: [{
-      text: ''
+      text: "{".concat(tag.value, "}")
     }]
   };
 
@@ -620,21 +621,24 @@ var Mention = function Mention(_ref6) {
 var Tag = function Tag(_ref7) {
   var attributes = _ref7.attributes,
       children = _ref7.children,
-      element = _ref7.element;
+      element = _ref7.element,
+      tags = _ref7.tags;
   var selected = (0, _slateReact.useSelected)();
   var focused = (0, _slateReact.useFocused)();
   return /*#__PURE__*/_react.default.createElement("span", _extends({}, attributes, {
     contentEditable: false,
-    "data-cy": "tag-".concat(element.tag.value),
+    "data-cy": "tag-".concat(children),
     style: {
       padding: '3px 3px 2px',
       margin: '0 1px',
       verticalAlign: 'baseline',
       display: 'inline-block',
       borderRadius: '4px',
-      backgroundColor: '#eee',
+      backgroundColor: tags.map(function (t) {
+        return "{".concat(t.value, "}");
+      }).includes(element.children[0].text) ? '#cbf4ca' : '#f4caca',
       fontSize: '0.9em',
       boxShadow: selected && focused ? '0 0 0 2px #B4D5FF' : 'none'
     }
-  }), "{", element.tag.value, "}", children);
+  }), element.children[0].text, children);
 };

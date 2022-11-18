@@ -50,7 +50,7 @@ export default function MyEditor({
   const [tagSearch, setTagSearch] = useState('')
 
   // Fonctions de render
-  const renderElement = useCallback(props => <Element {...props} />, [])
+  const renderElement = useCallback(props => <Element {...props} tags={tags} />, [])
   const renderLeaf = useCallback(props => <Leaf {...props} />, [])
 
   const users = mentions.filter((m) =>
@@ -432,8 +432,7 @@ const insertMention = (editor, user) => {
 const insertTag = (editor, tag) => {
   const node = {
     type: 'tag',
-    tag,
-    children: [{ text: '' }],
+    children: [{ text: `{${tag.value}}` }],
   }
   Transforms.insertNodes(editor, node)
   Transforms.move(editor)
@@ -508,26 +507,26 @@ const Mention = ({ attributes, children, element }) => {
   )
 }
 
-const Tag = ({ attributes, children, element }) => {
+const Tag = ({ attributes, children, element, tags }) => {
   const selected = useSelected()
   const focused = useFocused()
   return (
     <span
       {...attributes}
       contentEditable={false}
-      data-cy={`tag-${element.tag.value}`}
+      data-cy={`tag-${children}`}
       style={{
         padding: '3px 3px 2px',
         margin: '0 1px',
         verticalAlign: 'baseline',
         display: 'inline-block',
         borderRadius: '4px',
-        backgroundColor: '#eee',
+        backgroundColor: tags.map(t => `{${t.value}}`).includes(element.children[0].text) ? '#cbf4ca' : '#f4caca',
         fontSize: '0.9em',
         boxShadow: selected && focused ? '0 0 0 2px #B4D5FF' : 'none',
       }}
     >
-      &#123;{element.tag.value}&#125;
+      {element.children[0].text}
       {children}
     </span>
   )
