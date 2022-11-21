@@ -16,8 +16,19 @@ var _slateHistory = require("slate-history");
 
 var _slateReact = require("slate-react");
 
-var _excluded = ["className", "active", "reversed"],
-    _excluded2 = ["initialValue", "onChange", "mentions", "onMention", "tags", "placeholder", "readOnly", "minHeight"];
+var _format_bold = _interopRequireDefault(require("./icons/format_bold"));
+
+var _format_italic = _interopRequireDefault(require("./icons/format_italic"));
+
+var _format_underlined = _interopRequireDefault(require("./icons/format_underlined"));
+
+var _format_list_bulleted = _interopRequireDefault(require("./icons/format_list_bulleted"));
+
+var _format_list_numbered = _interopRequireDefault(require("./icons/format_list_numbered"));
+
+var _excluded = ["initialValue", "onChange", "mentions", "onMention", "tags", "placeholder", "readOnly", "minHeight"];
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -35,11 +46,11 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 function classNames() {
   for (var _len = arguments.length, classes = new Array(_len), _key = 0; _key < _len; _key++) {
@@ -49,36 +60,30 @@ function classNames() {
   return classes.filter(Boolean).join(' ');
 }
 
-var Button = /*#__PURE__*/_react.default.forwardRef(function (_ref, ref) {
-  var className = _ref.className,
-      active = _ref.active,
-      reversed = _ref.reversed,
-      props = _objectWithoutProperties(_ref, _excluded);
-
-  return /*#__PURE__*/_react.default.createElement("span", _extends({}, props, {
-    ref: ref,
-    className: className
-  }));
+var Button = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
+  return /*#__PURE__*/_react.default.createElement("span", _extends({
+    ref: ref
+  }, props));
 });
 
 exports.Button = Button;
 
-function MyEditor(_ref2) {
-  var _ref2$initialValue = _ref2.initialValue,
-      initialValue = _ref2$initialValue === void 0 ? null : _ref2$initialValue,
-      onChange = _ref2.onChange,
-      _ref2$mentions = _ref2.mentions,
-      mentions = _ref2$mentions === void 0 ? [] : _ref2$mentions,
-      onMention = _ref2.onMention,
-      _ref2$tags = _ref2.tags,
-      tags = _ref2$tags === void 0 ? [] : _ref2$tags,
-      _ref2$placeholder = _ref2.placeholder,
-      placeholder = _ref2$placeholder === void 0 ? 'Contenu de votre message' : _ref2$placeholder,
-      _ref2$readOnly = _ref2.readOnly,
-      readOnly = _ref2$readOnly === void 0 ? false : _ref2$readOnly,
-      _ref2$minHeight = _ref2.minHeight,
-      minHeight = _ref2$minHeight === void 0 ? 0 : _ref2$minHeight,
-      props = _objectWithoutProperties(_ref2, _excluded2);
+function MyEditor(_ref) {
+  var _ref$initialValue = _ref.initialValue,
+      initialValue = _ref$initialValue === void 0 ? null : _ref$initialValue,
+      onChange = _ref.onChange,
+      _ref$mentions = _ref.mentions,
+      mentions = _ref$mentions === void 0 ? [] : _ref$mentions,
+      onMention = _ref.onMention,
+      _ref$tags = _ref.tags,
+      tags = _ref$tags === void 0 ? [] : _ref$tags,
+      _ref$placeholder = _ref.placeholder,
+      placeholder = _ref$placeholder === void 0 ? 'Contenu de votre message' : _ref$placeholder,
+      _ref$readOnly = _ref.readOnly,
+      readOnly = _ref$readOnly === void 0 ? false : _ref$readOnly,
+      _ref$minHeight = _ref.minHeight,
+      minHeight = _ref$minHeight === void 0 ? 0 : _ref$minHeight,
+      props = _objectWithoutProperties(_ref, _excluded);
 
   // Editeur
   var editor = (0, _react.useMemo)(function () {
@@ -322,25 +327,15 @@ function MyEditor(_ref2) {
     className: "editor-toolbar"
   }, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(MarkButton, {
     format: "bold"
-  }, /*#__PURE__*/_react.default.createElement("i", {
-    className: "editor-icon icon-bold"
-  }, "\uE800")), /*#__PURE__*/_react.default.createElement(MarkButton, {
+  }, /*#__PURE__*/_react.default.createElement(_format_bold.default, null)), /*#__PURE__*/_react.default.createElement(MarkButton, {
     format: "italic"
-  }, /*#__PURE__*/_react.default.createElement("i", {
-    className: "editor-icon icon-italic"
-  }, "\uE801")), /*#__PURE__*/_react.default.createElement(MarkButton, {
+  }, /*#__PURE__*/_react.default.createElement(_format_italic.default, null)), /*#__PURE__*/_react.default.createElement(MarkButton, {
     format: "underline"
-  }, /*#__PURE__*/_react.default.createElement("i", {
-    className: "editor-icon icon-underline"
-  }, "\uF0CD")), /*#__PURE__*/_react.default.createElement(BlockButton, {
+  }, /*#__PURE__*/_react.default.createElement(_format_underlined.default, null)), /*#__PURE__*/_react.default.createElement(BlockButton, {
     format: "bulleted-list"
-  }, /*#__PURE__*/_react.default.createElement("i", {
-    className: "editor-icon icon-list-bullet"
-  }, "\uF0CA")), /*#__PURE__*/_react.default.createElement(BlockButton, {
+  }, /*#__PURE__*/_react.default.createElement(_format_list_bulleted.default, null)), /*#__PURE__*/_react.default.createElement(BlockButton, {
     format: "numbered-list"
-  }, /*#__PURE__*/_react.default.createElement("i", {
-    className: "editor-icon icon-list-numbered"
-  }, "\uF0CB")))), /*#__PURE__*/_react.default.createElement(_slateReact.Editable, {
+  }, /*#__PURE__*/_react.default.createElement(_format_list_numbered.default, null)))), /*#__PURE__*/_react.default.createElement(_slateReact.Editable, {
     readOnly: readOnly,
     className: readOnly ? '' : 'editor-editable',
     renderElement: renderElement,
@@ -451,9 +446,9 @@ var toggleMark = function toggleMark(editor, format) {
   }
 };
 
-var BlockButton = function BlockButton(_ref3) {
-  var format = _ref3.format,
-      children = _ref3.children;
+var BlockButton = function BlockButton(_ref2) {
+  var format = _ref2.format,
+      children = _ref2.children;
   var editor = (0, _slateReact.useSlate)();
   var isActive = isBlockActive(editor, format);
   return /*#__PURE__*/_react.default.createElement(Button, {
@@ -465,10 +460,10 @@ var BlockButton = function BlockButton(_ref3) {
   }, children);
 };
 
-var MarkButton = function MarkButton(_ref4) {
-  var format = _ref4.format,
-      children = _ref4.children,
-      className = _ref4.className;
+var MarkButton = function MarkButton(_ref3) {
+  var format = _ref3.format,
+      children = _ref3.children,
+      className = _ref3.className;
   var editor = (0, _slateReact.useSlate)();
   var isActive = isMarkActive(editor, format);
   return /*#__PURE__*/_react.default.createElement(Button, {
@@ -572,10 +567,10 @@ var Element = function Element(props) {
   }
 };
 
-var Leaf = function Leaf(_ref5) {
-  var attributes = _ref5.attributes,
-      children = _ref5.children,
-      leaf = _ref5.leaf;
+var Leaf = function Leaf(_ref4) {
+  var attributes = _ref4.attributes,
+      children = _ref4.children,
+      leaf = _ref4.leaf;
 
   if (leaf.bold) {
     children = /*#__PURE__*/_react.default.createElement("strong", null, children);
@@ -596,10 +591,10 @@ var Leaf = function Leaf(_ref5) {
   return /*#__PURE__*/_react.default.createElement("span", attributes, children);
 };
 
-var Mention = function Mention(_ref6) {
-  var attributes = _ref6.attributes,
-      children = _ref6.children,
-      element = _ref6.element;
+var Mention = function Mention(_ref5) {
+  var attributes = _ref5.attributes,
+      children = _ref5.children,
+      element = _ref5.element;
   var selected = (0, _slateReact.useSelected)();
   var focused = (0, _slateReact.useFocused)();
   return /*#__PURE__*/_react.default.createElement("span", _extends({}, attributes, {
@@ -618,11 +613,11 @@ var Mention = function Mention(_ref6) {
   }), "@", element.user.firstName, " ", element.user.lastName, children);
 };
 
-var Tag = function Tag(_ref7) {
-  var attributes = _ref7.attributes,
-      children = _ref7.children,
-      element = _ref7.element,
-      tags = _ref7.tags;
+var Tag = function Tag(_ref6) {
+  var attributes = _ref6.attributes,
+      children = _ref6.children,
+      element = _ref6.element,
+      tags = _ref6.tags;
   var selected = (0, _slateReact.useSelected)();
   var focused = (0, _slateReact.useFocused)();
   return /*#__PURE__*/_react.default.createElement("span", _extends({}, attributes, {

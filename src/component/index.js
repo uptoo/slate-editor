@@ -3,21 +3,18 @@ import { createEditor, Editor, Element as SlateElement, Range, Transforms } from
 import { withHistory } from 'slate-history'
 import { Editable, ReactEditor, Slate, useFocused, useSelected, useSlate, withReact } from 'slate-react'
 
+import Bold from './icons/format_bold'
+import Italic from './icons/format_italic'
+import Underlined from './icons/format_underlined'
+import ListBulleted from './icons/format_list_bulleted'
+import ListNumbered from './icons/format_list_numbered'
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export const Button = React.forwardRef(({
-  className,
-  active,
-  reversed,
-  ...props
-}, ref) => (
-  <span
-    {...props}
-    ref={ref}
-    className={className}
-  />
+export const Button = React.forwardRef((props, ref) => (
+  <span ref={ref} {...props} />
 ))
 
 export default function MyEditor({
@@ -220,19 +217,19 @@ export default function MyEditor({
           <div className="editor-toolbar">
             <div>
               <MarkButton format="bold">
-                <i className="editor-icon icon-bold">&#xe800;</i>
+                <Bold />
               </MarkButton>
               <MarkButton format="italic">
-                <i className="editor-icon icon-italic">&#xe801;</i>
+                <Italic />
               </MarkButton>
               <MarkButton format="underline">
-                <i className="editor-icon icon-underline">&#xf0cd;</i>
+                <Underlined />
               </MarkButton>
               <BlockButton format="bulleted-list">
-                <i className="editor-icon icon-list-bullet">&#xf0ca;</i>
+                <ListBulleted />
               </BlockButton>
               <BlockButton format="numbered-list">
-                <i className="editor-icon icon-list-numbered">&#xf0cb;</i>
+                <ListNumbered />
               </BlockButton>
             </div>
           </div>
