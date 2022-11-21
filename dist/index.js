@@ -250,7 +250,10 @@ function MyEditor(_ref) {
     _slateReact.ReactEditor.focus(editor);
 
     var editorEl = document.querySelector('[data-slate-editor="true"]');
-    editorEl.style.minHeight = "".concat(minHeight, "px");
+
+    if (editorEl !== null && editorEl !== void 0 && editorEl.style) {
+      editorEl.style.minHeight = "".concat(minHeight, "px");
+    }
   }, []);
   (0, _react.useEffect)(function () {
     if (readOnly) {

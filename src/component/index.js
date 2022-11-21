@@ -146,7 +146,9 @@ export default function MyEditor({
     const editorEl = document.querySelector(
       '[data-slate-editor="true"]',
     )
-    editorEl.style.minHeight = `${minHeight}px`
+    if (editorEl?.style) {
+      editorEl.style.minHeight = `${minHeight}px`
+    }
   }, [])
 
   useEffect(() => {
