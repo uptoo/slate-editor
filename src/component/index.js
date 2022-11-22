@@ -28,6 +28,7 @@ export default function MyEditor({
   placeholder = 'Contenu de votre message',
   readOnly = false,
   minHeight = 0,
+  extra,
   ...props
 }) {
   // Editeur
@@ -236,6 +237,7 @@ export default function MyEditor({
                 <ListNumbered />
               </BlockButton>
             </div>
+            {extra}
           </div>
         )}
         <Editable

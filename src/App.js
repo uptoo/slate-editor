@@ -16,6 +16,11 @@ function App() {
             { value: 'destPrenom', description: 'Prénom du destinataire' },
             { value: 'destNom', description: 'Nom du destinataire' }
           ]}
+          extra={
+            <div>
+              Coucou
+            </div>
+          }
         />
       </div>
     </div>

@@ -7,6 +7,9 @@
 .editor-toolbar {
   border-bottom: 1px #CCC solid;
   padding: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .editor-toolbar span {
