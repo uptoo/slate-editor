@@ -9,6 +9,8 @@ import Underlined from './icons/format_underlined'
 import ListBulleted from './icons/format_list_bulleted'
 import ListNumbered from './icons/format_list_numbered'
 
+import './css/style.css'
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }

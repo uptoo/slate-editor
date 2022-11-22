@@ -1,5 +1,4 @@
 import Editor from './component'
-import './component/css/style.css'
 
 function App() {
   return (

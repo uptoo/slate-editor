@@ -26,6 +26,8 @@ var _format_list_bulleted = _interopRequireDefault(require("./icons/format_list_
 
 var _format_list_numbered = _interopRequireDefault(require("./icons/format_list_numbered"));
 
+require("./css/style.css");
+
 var _excluded = ["initialValue", "onChange", "mentions", "onMention", "tags", "placeholder", "readOnly", "minHeight"];
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
