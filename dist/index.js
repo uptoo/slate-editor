@@ -28,7 +28,7 @@ var _format_list_numbered = _interopRequireDefault(require("./icons/format_list_
 
 require("./css/style.css");
 
-var _excluded = ["initialValue", "onChange", "mentions", "onMention", "tags", "placeholder", "readOnly", "minHeight"];
+var _excluded = ["initialValue", "onChange", "mentions", "onMention", "tags", "placeholder", "readOnly", "minHeight", "extra"];
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -85,6 +85,7 @@ function MyEditor(_ref) {
       readOnly = _ref$readOnly === void 0 ? false : _ref$readOnly,
       _ref$minHeight = _ref.minHeight,
       minHeight = _ref$minHeight === void 0 ? 0 : _ref$minHeight,
+      extra = _ref.extra,
       props = _objectWithoutProperties(_ref, _excluded);
 
   // Editeur
@@ -340,7 +341,7 @@ function MyEditor(_ref) {
     format: "bulleted-list"
   }, /*#__PURE__*/_react.default.createElement(_format_list_bulleted.default, null)), /*#__PURE__*/_react.default.createElement(BlockButton, {
     format: "numbered-list"
-  }, /*#__PURE__*/_react.default.createElement(_format_list_numbered.default, null)))), /*#__PURE__*/_react.default.createElement(_slateReact.Editable, {
+  }, /*#__PURE__*/_react.default.createElement(_format_list_numbered.default, null))), extra), /*#__PURE__*/_react.default.createElement(_slateReact.Editable, {
     readOnly: readOnly,
     className: readOnly ? '' : 'editor-editable',
     renderElement: renderElement,
