@@ -26,8 +26,6 @@ var _format_list_bulleted = _interopRequireDefault(require("./icons/format_list_
 
 var _format_list_numbered = _interopRequireDefault(require("./icons/format_list_numbered"));
 
-require("./css/style.css");
-
 var _excluded = ["initialValue", "onChange", "mentions", "onMention", "tags", "placeholder", "readOnly", "minHeight", "extra"];
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -54,18 +52,29 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-function classNames() {
-  for (var _len = arguments.length, classes = new Array(_len), _key = 0; _key < _len; _key++) {
-    classes[_key] = arguments[_key];
-  }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
-  return classes.filter(Boolean).join(' ');
-}
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var Button = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
   return /*#__PURE__*/_react.default.createElement("span", _extends({
     ref: ref
-  }, props));
+  }, props, {
+    style: _objectSpread({
+      display: 'inline-flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '30px',
+      width: '30px',
+      background: '#FFF',
+      border: 'none',
+      borderRadius: '4px',
+      cursor: 'pointer',
+      marginRight: '2px'
+    }, props.style)
+  }));
 });
 
 exports.Button = Button;
@@ -274,9 +283,11 @@ function MyEditor(_ref) {
     }
   }, [props.value]);
   return /*#__PURE__*/_react.default.createElement("div", {
-    className: classNames(!readOnly ? 'editor-bordered' : ''),
     style: {
-      minHeight: minHeight + 85
+      minHeight: minHeight + 85,
+      border: !readOnly && '1px #CCC solid',
+      background: !readOnly && '#fff',
+      borderRadius: '4px'
     }
   }, /*#__PURE__*/_react.default.createElement(_slateReact.Slate, {
     editor: editor,
@@ -330,7 +341,13 @@ function MyEditor(_ref) {
       setTagTarget(null);
     }
   }, !readOnly && /*#__PURE__*/_react.default.createElement("div", {
-    className: "editor-toolbar"
+    style: {
+      borderBottom: '1px #CCC solid',
+      padding: '8px',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center'
+    }
   }, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(MarkButton, {
     format: "bold"
   }, /*#__PURE__*/_react.default.createElement(_format_bold.default, null)), /*#__PURE__*/_react.default.createElement(MarkButton, {
@@ -343,11 +360,13 @@ function MyEditor(_ref) {
     format: "numbered-list"
   }, /*#__PURE__*/_react.default.createElement(_format_list_numbered.default, null))), extra), /*#__PURE__*/_react.default.createElement(_slateReact.Editable, {
     readOnly: readOnly,
-    className: readOnly ? '' : 'editor-editable',
     renderElement: renderElement,
     renderLeaf: renderLeaf,
     onKeyDown: onKeyDown,
-    placeholder: placeholder
+    placeholder: placeholder,
+    style: {
+      padding: !readOnly && '1em'
+    }
   }), mentionTarget && users.length > 0 && /*#__PURE__*/_react.default.createElement("div", {
     ref: mentionRef,
     style: {
@@ -458,7 +477,9 @@ var BlockButton = function BlockButton(_ref2) {
   var editor = (0, _slateReact.useSlate)();
   var isActive = isBlockActive(editor, format);
   return /*#__PURE__*/_react.default.createElement(Button, {
-    className: isActive ? 'isActive' : '',
+    style: {
+      background: isActive && '#eeeeee'
+    },
     onMouseDown: function onMouseDown(event) {
       event.preventDefault();
       toggleBlock(editor, format);
@@ -473,7 +494,9 @@ var MarkButton = function MarkButton(_ref3) {
   var editor = (0, _slateReact.useSlate)();
   var isActive = isMarkActive(editor, format);
   return /*#__PURE__*/_react.default.createElement(Button, {
-    className: isActive ? 'isActive' : '',
+    style: {
+      background: isActive && '#eeeeee'
+    },
     onMouseDown: function onMouseDown(event) {
       event.preventDefault();
       toggleMark(editor, format);

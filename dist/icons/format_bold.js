@@ -9,16 +9,16 @@ var _react = _interopRequireDefault(require("react"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function Bold(_ref) {
-  var _ref$className = _ref.className,
-      className = _ref$className === void 0 ? 'fill-current' : _ref$className;
+function Bold() {
   return /*#__PURE__*/_react.default.createElement("svg", {
     width: "24",
     height: "24",
     viewBox: "0 0 24 24",
     fill: "none",
     xmlns: "http://www.w3.org/2000/svg",
-    className: className
+    style: {
+      fill: '#272727'
+    }
   }, /*#__PURE__*/_react.default.createElement("path", {
     fillRule: "evenodd",
     clipRule: "evenodd",

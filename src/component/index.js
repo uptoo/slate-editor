@@ -9,14 +9,24 @@ import Underlined from './icons/format_underlined'
 import ListBulleted from './icons/format_list_bulleted'
 import ListNumbered from './icons/format_list_numbered'
 
-import './css/style.css'
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
-
 export const Button = React.forwardRef((props, ref) => (
-  <span ref={ref} {...props} />
+  <span
+    ref={ref}
+    {...props}
+    style={{
+      display: 'inline-flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '30px',
+      width: '30px',
+      background: '#FFF',
+      border: 'none',
+      borderRadius: '4px',
+      cursor: 'pointer',
+      marginRight: '2px',
+      ...props.style,
+    }}
+  />
 ))
 
 export default function MyEditor({
@@ -174,8 +184,12 @@ export default function MyEditor({
 
   return (
     <div 
-      className={classNames(!readOnly ? 'editor-bordered' : '')}
-      style={{ minHeight: minHeight + 85 }}
+      style={{
+        minHeight: minHeight + 85,
+        border: !readOnly && '1px #CCC solid',
+        background: !readOnly && '#fff',
+        borderRadius: '4px'
+      }}
     >
       <Slate
         editor={editor}
@@ -219,7 +233,15 @@ export default function MyEditor({
         }}
       >
         {!readOnly && (
-          <div className="editor-toolbar">
+          <div
+            style={{
+              borderBottom: '1px #CCC solid',
+              padding: '8px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}
+          >
             <div>
               <MarkButton format="bold">
                 <Bold />
@@ -242,11 +264,13 @@ export default function MyEditor({
         )}
         <Editable
           readOnly={readOnly}
-          className={readOnly ? '' : 'editor-editable'}
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           onKeyDown={onKeyDown}
           placeholder={placeholder}
+          style={{
+            padding: !readOnly && '1em'
+          }}
         />
         {mentionTarget && users.length > 0 && (
           <div
@@ -367,7 +391,9 @@ const BlockButton = ({ format, children }) => {
 
   return (
     <Button
-      className={isActive ? 'isActive' : ''}
+      style={{
+        background: isActive && '#eeeeee'
+      }}
       onMouseDown={event => {
         event.preventDefault()
         toggleBlock(editor, format)
@@ -383,7 +409,9 @@ const MarkButton = ({ format, children, className }) => {
   const isActive = isMarkActive(editor, format)
   return (
     <Button
-      className={isActive ? 'isActive' : ''}
+      style={{
+        background: isActive && '#eeeeee'
+      }}
       onMouseDown={event => {
         event.preventDefault()
         toggleMark(editor, format)
