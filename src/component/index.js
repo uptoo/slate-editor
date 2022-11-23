@@ -38,6 +38,7 @@ export default function MyEditor({
   placeholder = 'Contenu de votre message',
   readOnly = false,
   minHeight = 0,
+  maxHeight,
   extra,
   ...props
 }) {
@@ -156,11 +157,14 @@ export default function MyEditor({
 
   useEffect(() => {
     ReactEditor.focus(editor)
-    const editorEl = document.querySelector(
+    const element = document.querySelector(
       '[data-slate-editor="true"]',
     )
-    if (editorEl?.style) {
-      editorEl.style.minHeight = `${minHeight}px`
+    if (element?.style) {
+      element.style.minHeight = `${minHeight}px`
+      if (maxHeight) {
+        element.style.maxHeight = `${maxHeight}px`
+      }
     }
   }, [])
 

@@ -26,7 +26,7 @@ var _format_list_bulleted = _interopRequireDefault(require("./icons/format_list_
 
 var _format_list_numbered = _interopRequireDefault(require("./icons/format_list_numbered"));
 
-var _excluded = ["initialValue", "onChange", "mentions", "onMention", "tags", "placeholder", "readOnly", "minHeight", "extra"];
+var _excluded = ["initialValue", "onChange", "mentions", "onMention", "tags", "placeholder", "readOnly", "minHeight", "maxHeight", "extra"];
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -94,6 +94,7 @@ function MyEditor(_ref) {
       readOnly = _ref$readOnly === void 0 ? false : _ref$readOnly,
       _ref$minHeight = _ref.minHeight,
       minHeight = _ref$minHeight === void 0 ? 0 : _ref$minHeight,
+      maxHeight = _ref.maxHeight,
       extra = _ref.extra,
       props = _objectWithoutProperties(_ref, _excluded);
 
@@ -261,10 +262,14 @@ function MyEditor(_ref) {
   (0, _react.useEffect)(function () {
     _slateReact.ReactEditor.focus(editor);
 
-    var editorEl = document.querySelector('[data-slate-editor="true"]');
+    var element = document.querySelector('[data-slate-editor="true"]');
 
-    if (editorEl !== null && editorEl !== void 0 && editorEl.style) {
-      editorEl.style.minHeight = "".concat(minHeight, "px");
+    if (element !== null && element !== void 0 && element.style) {
+      element.style.minHeight = "".concat(minHeight, "px");
+
+      if (maxHeight) {
+        element.style.maxHeight = "".concat(maxHeight, "px");
+      }
     }
   }, []);
   (0, _react.useEffect)(function () {
