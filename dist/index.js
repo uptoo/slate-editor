@@ -266,6 +266,7 @@ function MyEditor(_ref) {
 
     if (element !== null && element !== void 0 && element.style) {
       element.style.minHeight = "".concat(minHeight, "px");
+      element.style.overflow = 'auto';
 
       if (maxHeight) {
         element.style.maxHeight = "".concat(maxHeight, "px");

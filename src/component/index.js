@@ -162,6 +162,7 @@ export default function MyEditor({
     )
     if (element?.style) {
       element.style.minHeight = `${minHeight}px`
+      element.style.overflow = 'auto'
       if (maxHeight) {
         element.style.maxHeight = `${maxHeight}px`
       }
