@@ -1,4 +1,4 @@
-"use strict";
+
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -26,7 +26,7 @@ var _format_list_bulleted = _interopRequireDefault(require("./icons/format_list_
 
 var _format_list_numbered = _interopRequireDefault(require("./icons/format_list_numbered"));
 
-var _excluded = ["initialValue", "onChange", "mentions", "onMention", "tags", "placeholder", "readOnly", "minHeight", "maxHeight", "extra"];
+var _excluded = ["initialValue", "onChange", "mentions", "onMention", "tags", "placeholder", "readOnly", "minHeight", "maxHeight", "extra", "hideButtons"];
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -92,6 +92,8 @@ function MyEditor(_ref) {
       placeholder = _ref$placeholder === void 0 ? 'Contenu de votre message' : _ref$placeholder,
       _ref$readOnly = _ref.readOnly,
       readOnly = _ref$readOnly === void 0 ? false : _ref$readOnly,
+      _ref$hideButtons = _ref.hideButtons,
+      hideButtons = _ref$hideButtons === void 0 ? false : _ref$hideButtons, // pour les sms
       _ref$minHeight = _ref.minHeight,
       minHeight = _ref$minHeight === void 0 ? 0 : _ref$minHeight,
       maxHeight = _ref.maxHeight,
@@ -346,7 +348,7 @@ function MyEditor(_ref) {
       setMentionTarget(null);
       setTagTarget(null);
     }
-  }, !readOnly && /*#__PURE__*/_react.default.createElement("div", {
+  }, (!readOnly && !hideButtons) && /*#__PURE__*/_react.default.createElement("div", {
     style: {
       borderBottom: '1px #CCC solid',
       padding: '8px',
@@ -354,17 +356,17 @@ function MyEditor(_ref) {
       justifyContent: 'space-between',
       alignItems: 'center'
     }
-  }, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(MarkButton, {
+  }, !hideButtons && /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(MarkButton, {
     format: "bold"
-  }, /*#__PURE__*/_react.default.createElement(_format_bold.default, null)), /*#__PURE__*/_react.default.createElement(MarkButton, {
+  }, !hideButtons && /*#__PURE__*/_react.default.createElement(_format_bold.default, null)), /*#__PURE__*/_react.default.createElement(MarkButton, {
     format: "italic"
-  }, /*#__PURE__*/_react.default.createElement(_format_italic.default, null)), /*#__PURE__*/_react.default.createElement(MarkButton, {
+  }, !hideButtons && /*#__PURE__*/_react.default.createElement(_format_italic.default, null)), /*#__PURE__*/_react.default.createElement(MarkButton, {
     format: "underline"
-  }, /*#__PURE__*/_react.default.createElement(_format_underlined.default, null)), /*#__PURE__*/_react.default.createElement(BlockButton, {
+  }, !hideButtons && /*#__PURE__*/_react.default.createElement(_format_underlined.default, null)), /*#__PURE__*/_react.default.createElement(BlockButton, {
     format: "bulleted-list"
-  }, /*#__PURE__*/_react.default.createElement(_format_list_bulleted.default, null)), /*#__PURE__*/_react.default.createElement(BlockButton, {
+  }, !hideButtons && /*#__PURE__*/_react.default.createElement(_format_list_bulleted.default, null)), /*#__PURE__*/_react.default.createElement(BlockButton, {
     format: "numbered-list"
-  }, /*#__PURE__*/_react.default.createElement(_format_list_numbered.default, null))), extra), /*#__PURE__*/_react.default.createElement(_slateReact.Editable, {
+  }, !hideButtons && /*#__PURE__*/_react.default.createElement(_format_list_numbered.default, null))), extra), /*#__PURE__*/_react.default.createElement(_slateReact.Editable, {
     readOnly: readOnly,
     renderElement: renderElement,
     renderLeaf: renderLeaf,
