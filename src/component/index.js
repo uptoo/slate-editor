@@ -37,6 +37,7 @@ export default function MyEditor({
   tags = [],
   placeholder = 'Contenu de votre message',
   readOnly = false,
+  hideButtons= false,
   minHeight = 0,
   maxHeight,
   extra,
@@ -237,7 +238,7 @@ export default function MyEditor({
           setTagTarget(null)
         }}
       >
-        {!readOnly && (
+        {!readOnly && !hideButtons && (
           <div
             style={{
               borderBottom: '1px #CCC solid',
@@ -247,6 +248,7 @@ export default function MyEditor({
               alignItems: 'center'
             }}
           >
+            {!hideButtons &&
             <div>
               <MarkButton format="bold">
                 <Bold />
@@ -264,6 +266,7 @@ export default function MyEditor({
                 <ListNumbered />
               </BlockButton>
             </div>
+            }
             {extra}
           </div>
         )}
