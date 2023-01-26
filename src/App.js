@@ -6,6 +6,7 @@ function App() {
       <div style={{ backgroundColor: '' }}>
         <Editor
           readOnly={false}
+          hideButtons={false}
           minHeight={200}
           mentions={[{
             _id: '1',
