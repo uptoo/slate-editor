@@ -28,6 +28,7 @@ export const Button = React.forwardRef((props, ref) => (
     }}
   />
 ))
+Button.displayName = 'Button'
 
 export default function MyEditor({
   initialValue = null,
@@ -41,6 +42,8 @@ export default function MyEditor({
   minHeight = 0,
   maxHeight,
   extra,
+  preview,
+  isPreview,
   ...props
 }) {
   // Editeur
@@ -62,7 +65,7 @@ export default function MyEditor({
   const [tagSearch, setTagSearch] = useState('')
 
   // Fonctions de render
-  const renderElement = useCallback(props => <Element {...props} tags={tags} />, [])
+  const renderElement = useCallback(props => <Element {...props} tags={tags} isPreview={isPreview} />, [tags, isPreview])
   const renderLeaf = useCallback(props => <Leaf {...props} />, [])
 
   const users = mentions.filter((m) =>
@@ -72,6 +75,8 @@ export default function MyEditor({
   const availableTags = tags.filter((t) =>
     t.value.toLowerCase().startsWith(tagSearch.toLowerCase())
   ).slice(0, 10)
+
+  const showButtons = !readOnly && !hideButtons
 
   const onKeyDown = useCallback(
     event => {
@@ -238,36 +243,55 @@ export default function MyEditor({
           setTagTarget(null)
         }}
       >
-        {!readOnly && !hideButtons && (
-          <div
-            style={{
-              borderBottom: '1px #CCC solid',
-              padding: '8px',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center'
-            }}
-          >
-            {!hideButtons &&
-            <div>
-              <MarkButton format="bold">
-                <Bold />
-              </MarkButton>
-              <MarkButton format="italic">
-                <Italic />
-              </MarkButton>
-              <MarkButton format="underline">
-                <Underlined />
-              </MarkButton>
-              <BlockButton format="bulleted-list">
-                <ListBulleted />
-              </BlockButton>
-              <BlockButton format="numbered-list">
-                <ListNumbered />
-              </BlockButton>
-            </div>
+        {(showButtons || preview) && (
+          <div style={{
+            borderBottom: '1px #CCC solid',
+            display: 'flex',
+            alignItems: 'center'
+          }}>
+            {preview &&
+              <div style={{
+                display: 'flex',
+                padding: '8px 12px',
+                height: '100%',
+                minHeight: '47px',
+                borderRight: '1px #CCC solid',
+                alignItems: 'center'
+              }}>
+                {preview}
+              </div>
             }
-            {extra}
+            <div
+              style={{
+                padding: '8px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                {showButtons && (
+                  <>
+                    <MarkButton format="bold">
+                      <Bold />
+                    </MarkButton>
+                    <MarkButton format="italic">
+                      <Italic />
+                    </MarkButton>
+                    <MarkButton format="underline">
+                      <Underlined />
+                    </MarkButton>
+                    <BlockButton format="bulleted-list">
+                      <ListBulleted />
+                    </BlockButton>
+                    <BlockButton format="numbered-list">
+                      <ListNumbered />
+                    </BlockButton>
+                  </>
+                )}
+              </div>
+              {extra}
+            </div>
           </div>
         )}
         <Editable
@@ -546,9 +570,10 @@ const Mention = ({ attributes, children, element }) => {
   )
 }
 
-const Tag = ({ attributes, children, element, tags }) => {
+const Tag = ({ attributes, children, element, tags = [], isPreview }) => {
   const selected = useSelected()
   const focused = useFocused()
+  const found = tags.find((t) => `{${t.value}}` === element.children[0].text)
   return (
     <span
       {...attributes}
@@ -560,12 +585,15 @@ const Tag = ({ attributes, children, element, tags }) => {
         verticalAlign: 'baseline',
         display: 'inline-block',
         borderRadius: '4px',
-        backgroundColor: tags.map(t => `{${t.value}}`).includes(element.children[0].text) ? '#cbf4ca' : '#f4caca',
+        backgroundColor: found ? '#cbf4ca' : '#f4caca',
         fontSize: '0.9em',
         boxShadow: selected && focused ? '0 0 0 2px #B4D5FF' : 'none',
       }}
     >
-      {element.children[0].text}
+      {(isPreview && found)
+        ? found.currentText
+        : element.children[0].text
+      }
       {children}
     </span>
   )
