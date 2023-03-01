@@ -14,7 +14,7 @@ var _format_italic = _interopRequireDefault(require("./icons/format_italic"));
 var _format_underlined = _interopRequireDefault(require("./icons/format_underlined"));
 var _format_list_bulleted = _interopRequireDefault(require("./icons/format_list_bulleted"));
 var _format_list_numbered = _interopRequireDefault(require("./icons/format_list_numbered"));
-var _excluded = ["initialValue", "onChange", "mentions", "onMention", "tags", "placeholder", "readOnly", "hideButtons", "minHeight", "maxHeight", "extra"];
+var _excluded = ["initialValue", "onChange", "mentions", "onMention", "tags", "placeholder", "readOnly", "hideButtons", "minHeight", "maxHeight", "extra", "preview", "isPreview"];
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -22,8 +22,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i.return && (_r = _i.return(), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0) { ; } } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i.return && (_r = _i.return(), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
@@ -52,6 +52,7 @@ var Button = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
   }));
 });
 exports.Button = Button;
+Button.displayName = 'Button';
 function MyEditor(_ref) {
   var _ref$initialValue = _ref.initialValue,
     initialValue = _ref$initialValue === void 0 ? null : _ref$initialValue,
@@ -71,6 +72,8 @@ function MyEditor(_ref) {
     minHeight = _ref$minHeight === void 0 ? 0 : _ref$minHeight,
     maxHeight = _ref.maxHeight,
     extra = _ref.extra,
+    preview = _ref.preview,
+    isPreview = _ref.isPreview,
     props = _objectWithoutProperties(_ref, _excluded);
   // Editeur
   var editor = (0, _react.useMemo)(function () {
@@ -120,9 +123,10 @@ function MyEditor(_ref) {
   // Fonctions de render
   var renderElement = (0, _react.useCallback)(function (props) {
     return /*#__PURE__*/_react.default.createElement(Element, _extends({}, props, {
-      tags: tags
+      tags: tags,
+      isPreview: isPreview
     }));
-  }, []);
+  }, [tags, isPreview]);
   var renderLeaf = (0, _react.useCallback)(function (props) {
     return /*#__PURE__*/_react.default.createElement(Leaf, props);
   }, []);
@@ -132,6 +136,7 @@ function MyEditor(_ref) {
   var availableTags = tags.filter(function (t) {
     return t.value.toLowerCase().startsWith(tagSearch.toLowerCase());
   }).slice(0, 10);
+  var showButtons = !readOnly && !hideButtons;
   var onKeyDown = (0, _react.useCallback)(function (event) {
     if (mentionTarget) {
       switch (event.key) {
@@ -280,15 +285,34 @@ function MyEditor(_ref) {
       setMentionTarget(null);
       setTagTarget(null);
     }
-  }, !readOnly && !hideButtons && /*#__PURE__*/_react.default.createElement("div", {
+  }, (showButtons || preview) && /*#__PURE__*/_react.default.createElement("div", {
     style: {
       borderBottom: '1px #CCC solid',
+      display: 'flex',
+      alignItems: 'center'
+    }
+  }, preview && /*#__PURE__*/_react.default.createElement("div", {
+    style: {
+      display: 'flex',
+      padding: '8px 12px',
+      height: '100%',
+      minHeight: '47px',
+      borderRight: '1px #CCC solid',
+      alignItems: 'center'
+    }
+  }, preview), /*#__PURE__*/_react.default.createElement("div", {
+    style: {
       padding: '8px',
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center'
     }
-  }, !hideButtons && /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(MarkButton, {
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center'
+    }
+  }, showButtons && /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(MarkButton, {
     format: "bold"
   }, /*#__PURE__*/_react.default.createElement(_format_bold.default, null)), /*#__PURE__*/_react.default.createElement(MarkButton, {
     format: "italic"
@@ -298,7 +322,7 @@ function MyEditor(_ref) {
     format: "bulleted-list"
   }, /*#__PURE__*/_react.default.createElement(_format_list_bulleted.default, null)), /*#__PURE__*/_react.default.createElement(BlockButton, {
     format: "numbered-list"
-  }, /*#__PURE__*/_react.default.createElement(_format_list_numbered.default, null))), extra), /*#__PURE__*/_react.default.createElement(_slateReact.Editable, {
+  }, /*#__PURE__*/_react.default.createElement(_format_list_numbered.default, null)))), extra)), /*#__PURE__*/_react.default.createElement(_slateReact.Editable, {
     readOnly: readOnly,
     renderElement: renderElement,
     renderLeaf: renderLeaf,
@@ -538,9 +562,14 @@ var Tag = function Tag(_ref6) {
   var attributes = _ref6.attributes,
     children = _ref6.children,
     element = _ref6.element,
-    tags = _ref6.tags;
+    _ref6$tags = _ref6.tags,
+    tags = _ref6$tags === void 0 ? [] : _ref6$tags,
+    isPreview = _ref6.isPreview;
   var selected = (0, _slateReact.useSelected)();
   var focused = (0, _slateReact.useFocused)();
+  var found = tags.find(function (t) {
+    return "{".concat(t.value, "}") === element.children[0].text;
+  });
   return /*#__PURE__*/_react.default.createElement("span", _extends({}, attributes, {
     contentEditable: false,
     "data-cy": "tag-".concat(children),
@@ -550,11 +579,9 @@ var Tag = function Tag(_ref6) {
       verticalAlign: 'baseline',
       display: 'inline-block',
       borderRadius: '4px',
-      backgroundColor: tags.map(function (t) {
-        return "{".concat(t.value, "}");
-      }).includes(element.children[0].text) ? '#cbf4ca' : '#f4caca',
+      backgroundColor: found ? '#cbf4ca' : '#f4caca',
       fontSize: '0.9em',
       boxShadow: selected && focused ? '0 0 0 2px #B4D5FF' : 'none'
     }
-  }), element.children[0].text, children);
+  }), isPreview && found ? found.currentText : element.children[0].text, children);
 };

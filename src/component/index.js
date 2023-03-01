@@ -24,11 +24,10 @@ export const Button = React.forwardRef((props, ref) => (
       borderRadius: '4px',
       cursor: 'pointer',
       marginRight: '2px',
-      ...props.style,
+      ...props.style
     }}
   />
 ))
-Button.displayName = 'Button'
 
 export default function MyEditor({
   initialValue = null,
