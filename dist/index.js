@@ -52,7 +52,6 @@ var Button = /*#__PURE__*/_react.default.forwardRef(function (props, ref) {
   }));
 });
 exports.Button = Button;
-Button.displayName = 'Button';
 function MyEditor(_ref) {
   var _ref$initialValue = _ref.initialValue,
     initialValue = _ref$initialValue === void 0 ? null : _ref$initialValue,
@@ -464,12 +463,17 @@ var withMentions = function withMentions(editor) {
 };
 var withTags = function withTags(editor) {
   var isInline = editor.isInline,
-    isVoid = editor.isVoid;
+    isVoid = editor.isVoid,
+    markableVoid = editor.markableVoid;
   editor.isInline = function (element) {
     return element.type === 'tag' ? true : isInline(element);
   };
   editor.isVoid = function (element) {
     return element.type === 'tag' ? true : isVoid(element);
+  };
+  // Editable tags
+  editor.markableVoid = function (element) {
+    return element.type === 'tag' || markableVoid(element);
   };
   return editor;
 };
@@ -570,18 +574,28 @@ var Tag = function Tag(_ref6) {
   var found = tags.find(function (t) {
     return "{".concat(t.value, "}") === element.children[0].text;
   });
+  var style = {
+    padding: '3px 3px 2px',
+    margin: '0 1px',
+    verticalAlign: 'baseline',
+    display: 'inline-block',
+    borderRadius: '4px',
+    backgroundColor: found ? '#cbf4ca' : '#f4caca',
+    fontSize: '0.9em',
+    boxShadow: selected && focused ? '0 0 0 2px #B4D5FF' : 'none'
+  };
+  if (element.children[0].bold) {
+    style.fontWeight = 'bold';
+  }
+  if (element.children[0].italic) {
+    style.fontStyle = 'italic';
+  }
+  if (element.children[0].underline) {
+    style.textDecoration = 'underline';
+  }
   return /*#__PURE__*/_react.default.createElement("span", _extends({}, attributes, {
     contentEditable: false,
     "data-cy": "tag-".concat(children),
-    style: {
-      padding: '3px 3px 2px',
-      margin: '0 1px',
-      verticalAlign: 'baseline',
-      display: 'inline-block',
-      borderRadius: '4px',
-      backgroundColor: found ? '#cbf4ca' : '#f4caca',
-      fontSize: '0.9em',
-      boxShadow: selected && focused ? '0 0 0 2px #B4D5FF' : 'none'
-    }
+    style: style
   }), isPreview && found ? found.currentText : element.children[0].text, children);
 };
