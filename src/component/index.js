@@ -477,7 +477,7 @@ const withTags = editor => {
   editor.isVoid = element => {
     return element.type === 'tag' ? true : isVoid(element)
   }
-
+// Editable tags
   editor.markableVoid = (element) => (element.type === 'tag' || markableVoid(element))
 
 
