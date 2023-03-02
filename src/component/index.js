@@ -468,7 +468,7 @@ const withMentions = editor => {
 }
 
 const withTags = editor => {
-  const { isInline, isVoid } = editor
+  const { isInline, isVoid, markableVoid } = editor
 
   editor.isInline = element => {
     return element.type === 'tag' ? true : isInline(element)
@@ -477,6 +477,9 @@ const withTags = editor => {
   editor.isVoid = element => {
     return element.type === 'tag' ? true : isVoid(element)
   }
+
+  editor.markableVoid = (element) => (element.type === 'tag' || markableVoid(element))
+
 
   return editor
 }
@@ -573,21 +576,35 @@ const Tag = ({ attributes, children, element, tags = [], isPreview }) => {
   const selected = useSelected()
   const focused = useFocused()
   const found = tags.find((t) => `{${t.value}}` === element.children[0].text)
+
+  const style = {
+    padding: '3px 3px 2px',
+    margin: '0 1px',
+    verticalAlign: 'baseline',
+    display: 'inline-block',
+    borderRadius: '4px',
+    backgroundColor: found ? '#cbf4ca' : '#f4caca',
+    fontSize: '0.9em',
+    boxShadow: selected && focused ? '0 0 0 2px #B4D5FF' : 'none'
+  }
+
+  if (element.children[0].bold) {
+    style.fontWeight = 'bold'
+  }
+  if (element.children[0].italic) {
+    style.fontStyle = 'italic'
+  }
+
+  if (element.children[0].underline) {
+    style.textDecoration = 'underline'
+  }
+
   return (
     <span
       {...attributes}
       contentEditable={false}
       data-cy={`tag-${children}`}
-      style={{
-        padding: '3px 3px 2px',
-        margin: '0 1px',
-        verticalAlign: 'baseline',
-        display: 'inline-block',
-        borderRadius: '4px',
-        backgroundColor: found ? '#cbf4ca' : '#f4caca',
-        fontSize: '0.9em',
-        boxShadow: selected && focused ? '0 0 0 2px #B4D5FF' : 'none',
-      }}
+      style={style}
     >
       {(isPreview && found)
         ? found.currentText
