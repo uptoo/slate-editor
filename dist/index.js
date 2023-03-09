@@ -471,7 +471,6 @@ var withTags = function withTags(editor) {
   editor.isVoid = function (element) {
     return element.type === 'tag' ? true : isVoid(element);
   };
-  // Editable tags
   editor.markableVoid = function (element) {
     return element.type === 'tag' || markableVoid(element);
   };
