@@ -528,7 +528,11 @@ var Element = function Element(props) {
     case 'list-item':
       return /*#__PURE__*/_react.default.createElement("li", attributes, children);
     case 'numbered-list':
-      return /*#__PURE__*/_react.default.createElement("ol", attributes, children);
+      return /*#__PURE__*/_react.default.createElement("ol", _extends({
+        style: {
+          listStyleType: 'decimal'
+        }
+      }, attributes), children);
     default:
       return /*#__PURE__*/_react.default.createElement("div", attributes, children);
   }
