@@ -203,7 +203,8 @@ export default function MyEditor({
         minHeight: minHeight + 85,
         border: !readOnly && '1px #CCC solid',
         background: !readOnly && '#fff',
-        borderRadius: '4px',
+        borderRadius: '10px',
+        padding: '8px',
         ...style
       }}
       onBlur={onBlur}
@@ -251,7 +252,7 @@ export default function MyEditor({
       >
         {(showButtons || preview) && (
           <div style={{
-            borderBottom: '1px #CCC solid',
+            // borderBottom: '1px #CCC solid',
             display: 'flex',
             alignItems: 'center'
           }}>
@@ -275,7 +276,7 @@ export default function MyEditor({
                 alignItems: 'center'
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyItems: 'start' }}>
                 {showButtons && (
                   <>
                     <MarkButton format="bold">
@@ -307,7 +308,7 @@ export default function MyEditor({
           onKeyDown={onKeyDown}
           placeholder={placeholder}
           style={{
-            padding: !readOnly && '1em'
+            padding: !readOnly && '0em 1em'
           }}
         />
         {mentionTarget && users.length > 0 && (
@@ -449,6 +450,7 @@ const MarkButton = ({ format, children, className }) => {
     <Button
       style={{
         background: isActive && '#eeeeee'
+
       }}
       onMouseDown={event => {
         event.preventDefault()

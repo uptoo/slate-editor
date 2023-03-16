@@ -14,7 +14,7 @@ function Underlined() {
     fill: "none",
     xmlns: "http://www.w3.org/2000/svg",
     style: {
-      fill: '#272727'
+      fill: '#64748b'
     }
   }, /*#__PURE__*/_react.default.createElement("path", {
     fillRule: "evenodd",
