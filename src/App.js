@@ -19,7 +19,6 @@ function App() {
           ]}
           extra={
             <div>
-              Coucou
             </div>
           }
         />

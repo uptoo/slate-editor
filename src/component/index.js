@@ -37,19 +37,22 @@ export default function MyEditor({
   tags = [],
   placeholder = 'Contenu de votre message',
   readOnly = false,
-  hideButtons= false,
+  hideButtons = false,
   minHeight = 0,
   maxHeight,
   extra,
   preview,
   isPreview,
+  isFocus = true,
+  onBlur,
+  style = {},
   ...props
 }) {
   // Editeur
   const editor = useMemo(() => withTags(withMentions(withReact(withHistory(createEditor())))), [])
 
   // Valeur du contenu
-  const [value, setValue] = useState(initialValue || [{ children: [{ text: '' }] }])
+  const [value, setValue] = useState(initialValue || [{ children: [{ text: '' }], type: 'paragraph' }])
 
   // Pour les mentions
   const mentionRef = useRef()
@@ -161,7 +164,9 @@ export default function MyEditor({
   // }, [availableTags.length, editor, tagIndex, tagSearch, tagTarget])
 
   useEffect(() => {
-    ReactEditor.focus(editor)
+    if (isFocus) {
+      ReactEditor.focus(editor)
+    }
     const element = document.querySelector(
       '[data-slate-editor="true"]',
     )
@@ -193,17 +198,19 @@ export default function MyEditor({
   }, [props.value])
 
   return (
-    <div 
+    <div
       style={{
         minHeight: minHeight + 85,
         border: !readOnly && '1px #CCC solid',
         background: !readOnly && '#fff',
-        borderRadius: '4px'
+        borderRadius: '4px',
+        ...style
       }}
+      onBlur={onBlur}
     >
       <Slate
         editor={editor}
-        value={value} 
+        value={value}
         onChange={value => {
           setValue(value)
           const { selection } = editor
