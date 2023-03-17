@@ -531,7 +531,7 @@ var Element = function Element(props) {
       return /*#__PURE__*/_react.default.createElement("ol", _extends({
         style: {
           listStyleType: 'decimal',
-          listStylePosition: 'inside'
+          listStylePosition: 'outside'
         }
       }, attributes), children);
     default:
