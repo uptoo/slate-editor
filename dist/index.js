@@ -226,7 +226,8 @@ function MyEditor(_ref) {
     var element = document.querySelector('[data-slate-editor="true"]');
     if (element !== null && element !== void 0 && element.style) {
       element.style.minHeight = "".concat(minHeight, "px");
-      element.style.overflow = 'auto';
+      element.style.overflowY = 'auto';
+      element.style.overflowX = 'hidden';
       if (maxHeight) {
         element.style.maxHeight = "".concat(maxHeight, "px");
       }
@@ -319,8 +320,7 @@ function MyEditor(_ref) {
   }, /*#__PURE__*/_react.default.createElement("div", {
     style: {
       display: 'flex',
-      alignItems: 'center',
-      justifyItems: 'start'
+      alignItems: 'center'
     }
   }, showButtons && /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(MarkButton, {
     format: "bold"
