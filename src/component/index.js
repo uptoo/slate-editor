@@ -530,7 +530,7 @@ const Element = (props) => {
     case 'list-item':
       return <li {...attributes}>{children}</li>
     case 'numbered-list':
-      return <ol style={{ listStyleType: 'decimal' }} {...attributes}>{children}</ol>
+      return <ol style={{ listStyleType: 'decimal', listStylePosition: 'inside' }} {...attributes}>{children}</ol>
     default:
       return <div {...attributes}>{children}</div>
   }

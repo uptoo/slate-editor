@@ -530,7 +530,8 @@ var Element = function Element(props) {
     case 'numbered-list':
       return /*#__PURE__*/_react.default.createElement("ol", _extends({
         style: {
-          listStyleType: 'decimal'
+          listStyleType: 'decimal',
+          listStylePosition: 'inside'
         }
       }, attributes), children);
     default:
