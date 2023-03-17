@@ -172,7 +172,8 @@ export default function MyEditor({
     )
     if (element?.style) {
       element.style.minHeight = `${minHeight}px`
-      element.style.overflow = 'auto'
+      element.style.overflowY = 'auto'
+      element.style.overflowX = 'hidden'
       if (maxHeight) {
         element.style.maxHeight = `${maxHeight}px`
       }
@@ -276,7 +277,7 @@ export default function MyEditor({
                 alignItems: 'center'
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', justifyItems: 'start' }}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
                 {showButtons && (
                   <>
                     <MarkButton format="bold">
