@@ -43,7 +43,7 @@ export default function MyEditor({
   extra,
   preview,
   isPreview,
-  isFocus = true, // Focus à l'initialisation
+  isFocus = true, // Focus à l'initialisation 
   onBlur,
   style = {},
   ...props
