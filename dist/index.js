@@ -225,7 +225,7 @@ function MyEditor(_ref) {
     }
     var element = document.querySelector('[data-slate-editor="true"]');
     if (element !== null && element !== void 0 && element.style) {
-      element.style.minHeight = "".concat(minHeight, "px");
+      // element.style.minHeight = `${minHeight}px`
       element.style.overflowY = 'auto';
       element.style.overflowX = 'hidden';
       if (maxHeight) {
@@ -250,11 +250,11 @@ function MyEditor(_ref) {
   }, [props.value]);
   return /*#__PURE__*/_react.default.createElement("div", {
     style: _objectSpread({
-      minHeight: minHeight + 85,
+      // minHeight: minHeight + 85,
       border: !readOnly && '1px #CCC solid',
       background: !readOnly && '#fff',
-      borderRadius: '10px',
-      padding: '8px'
+      borderRadius: '6px',
+      padding: '4px'
     }, style),
     onBlur: onBlur
   }, /*#__PURE__*/_react.default.createElement(_slateReact.Slate, {
@@ -306,13 +306,13 @@ function MyEditor(_ref) {
       display: 'flex',
       padding: '8px 12px',
       height: '100%',
-      minHeight: '47px',
+      // minHeight: '47px',
       borderRight: '1px #CCC solid',
       alignItems: 'center'
     }
   }, preview), /*#__PURE__*/_react.default.createElement("div", {
     style: {
-      padding: '8px',
+      padding: '0px',
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center'
@@ -339,7 +339,7 @@ function MyEditor(_ref) {
     onKeyDown: onKeyDown,
     placeholder: placeholder,
     style: {
-      padding: !readOnly && '0em 1em'
+      padding: !readOnly && '4px'
     }
   }), mentionTarget && users.length > 0 && /*#__PURE__*/_react.default.createElement("div", {
     ref: mentionRef,

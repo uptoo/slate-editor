@@ -171,7 +171,7 @@ export default function MyEditor({
       '[data-slate-editor="true"]',
     )
     if (element?.style) {
-      element.style.minHeight = `${minHeight}px`
+      // element.style.minHeight = `${minHeight}px`
       element.style.overflowY = 'auto'
       element.style.overflowX = 'hidden'
       if (maxHeight) {
@@ -201,11 +201,11 @@ export default function MyEditor({
   return (
     <div
       style={{
-        minHeight: minHeight + 85,
+        // minHeight: minHeight + 85,
         border: !readOnly && '1px #CCC solid',
         background: !readOnly && '#fff',
-        borderRadius: '10px',
-        padding: '8px',
+        borderRadius: '6px',
+        padding: '4px',
         ...style
       }}
       onBlur={onBlur}
@@ -262,7 +262,7 @@ export default function MyEditor({
                 display: 'flex',
                 padding: '8px 12px',
                 height: '100%',
-                minHeight: '47px',
+                // minHeight: '47px',
                 borderRight: '1px #CCC solid',
                 alignItems: 'center'
               }}>
@@ -271,7 +271,7 @@ export default function MyEditor({
             }
             <div
               style={{
-                padding: '8px',
+                padding: '0px',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center'
@@ -309,7 +309,7 @@ export default function MyEditor({
           onKeyDown={onKeyDown}
           placeholder={placeholder}
           style={{
-            padding: !readOnly && '0em 1em'
+            padding: !readOnly && '4px'
           }}
         />
         {mentionTarget && users.length > 0 && (
