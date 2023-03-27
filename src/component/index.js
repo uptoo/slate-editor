@@ -43,7 +43,7 @@ export default function MyEditor({
   extra,
   preview,
   isPreview,
-  isFocus = true, // Focus à l'initialisation 
+  autoFocus = true, // Focus à l'initialisation 
   onBlur,
   style = {},
   ...props
@@ -164,7 +164,7 @@ export default function MyEditor({
   // }, [availableTags.length, editor, tagIndex, tagSearch, tagTarget])
 
   useEffect(() => {
-    if (isFocus) {
+    if (autoFocus) {
       ReactEditor.focus(editor)
     }
     const element = document.querySelector(
@@ -199,17 +199,7 @@ export default function MyEditor({
   }, [props.value])
 
   return (
-    <div
-      style={{
-        // minHeight: minHeight + 85,
-        border: !readOnly && '1px #CCC solid',
-        background: !readOnly && '#fff',
-        borderRadius: '6px',
-        padding: '4px',
-        ...style
-      }}
-      onBlur={onBlur}
-    >
+    <div onBlur={onBlur}>
       <Slate
         editor={editor}
         value={value}

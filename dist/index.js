@@ -14,7 +14,7 @@ var _format_italic = _interopRequireDefault(require("./icons/format_italic"));
 var _format_underlined = _interopRequireDefault(require("./icons/format_underlined"));
 var _format_list_bulleted = _interopRequireDefault(require("./icons/format_list_bulleted"));
 var _format_list_numbered = _interopRequireDefault(require("./icons/format_list_numbered"));
-var _excluded = ["initialValue", "onChange", "mentions", "onMention", "tags", "placeholder", "readOnly", "hideButtons", "minHeight", "maxHeight", "extra", "preview", "isPreview", "isFocus", "onBlur", "style"];
+var _excluded = ["initialValue", "onChange", "mentions", "onMention", "tags", "placeholder", "readOnly", "hideButtons", "minHeight", "maxHeight", "extra", "preview", "isPreview", "autoFocus", "onBlur", "style"];
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -73,8 +73,8 @@ function MyEditor(_ref) {
     extra = _ref.extra,
     preview = _ref.preview,
     isPreview = _ref.isPreview,
-    _ref$isFocus = _ref.isFocus,
-    isFocus = _ref$isFocus === void 0 ? true : _ref$isFocus,
+    _ref$autoFocus = _ref.autoFocus,
+    autoFocus = _ref$autoFocus === void 0 ? true : _ref$autoFocus,
     onBlur = _ref.onBlur,
     _ref$style = _ref.style,
     style = _ref$style === void 0 ? {} : _ref$style,
@@ -220,7 +220,7 @@ function MyEditor(_ref) {
   // }, [availableTags.length, editor, tagIndex, tagSearch, tagTarget])
 
   (0, _react.useEffect)(function () {
-    if (isFocus) {
+    if (autoFocus) {
       _slateReact.ReactEditor.focus(editor);
     }
     var element = document.querySelector('[data-slate-editor="true"]');
@@ -249,13 +249,6 @@ function MyEditor(_ref) {
     }
   }, [props.value]);
   return /*#__PURE__*/_react.default.createElement("div", {
-    style: _objectSpread({
-      // minHeight: minHeight + 85,
-      border: !readOnly && '1px #CCC solid',
-      background: !readOnly && '#fff',
-      borderRadius: '6px',
-      padding: '4px'
-    }, style),
     onBlur: onBlur
   }, /*#__PURE__*/_react.default.createElement(_slateReact.Slate, {
     editor: editor,
