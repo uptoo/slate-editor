@@ -299,7 +299,8 @@ export default function MyEditor({
           onKeyDown={onKeyDown}
           placeholder={placeholder}
           style={{
-            padding: !readOnly && '4px'
+            padding: !readOnly && '4px',
+            minHeight: minHeight && `${minHeight}px`
           }}
         />
         {mentionTarget && users.length > 0 && (
