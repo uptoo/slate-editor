@@ -560,14 +560,15 @@ var Mention = function Mention(_ref5) {
     contentEditable: false,
     "data-cy": "mention-".concat(element.user._id),
     style: {
-      padding: '3px 3px 2px',
-      margin: '0 1px',
-      verticalAlign: 'baseline',
-      display: 'inline-block',
-      borderRadius: '4px',
-      backgroundColor: '#eee',
-      fontSize: '0.9em',
-      boxShadow: selected && focused ? '0 0 0 2px #B4D5FF' : 'none'
+       // padding: '3px 3px 2px',
+       margin: '0 1px',
+       verticalAlign: 'baseline',
+       display: 'inline-block',
+       // borderRadius: '4px',
+       // backgroundColor: '#E5F6FE',
+       fontSize: '1em',
+       color:'#00A0FE'
+       // boxShadow: selected && focused ? '0 0 0 2px #B4D5FF' : 'none'
     }
   }), "@", element.user.firstName, " ", element.user.lastName, children);
 };
