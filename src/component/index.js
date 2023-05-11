@@ -1,13 +1,20 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { createEditor, Editor, Element as SlateElement, Range, Transforms } from 'slate'
+import React, {
+  useCallback, useEffect, useMemo, useRef, useState,
+} from 'react'
+import {
+  createEditor, Editor, Element as SlateElement, Range, Transforms,
+} from 'slate'
 import { withHistory } from 'slate-history'
-import { Editable, ReactEditor, Slate, useFocused, useSelected, useSlate, withReact } from 'slate-react'
+import {
+  Editable, ReactEditor, Slate, useFocused, useSelected, useSlate, withReact,
+} from 'slate-react'
 
 import Bold from './icons/format_bold'
 import Italic from './icons/format_italic'
 import Underlined from './icons/format_underlined'
 import ListBulleted from './icons/format_list_bulleted'
 import ListNumbered from './icons/format_list_numbered'
+import LinkButton from './icons/format_link'
 
 export const Button = React.forwardRef((props, ref) => (
   <span
@@ -24,7 +31,7 @@ export const Button = React.forwardRef((props, ref) => (
       borderRadius: '4px',
       cursor: 'pointer',
       marginRight: '2px',
-      ...props.style
+      ...props.style,
     }}
   />
 ))
@@ -43,13 +50,13 @@ export default function MyEditor({
   extra,
   preview,
   isPreview,
-  autoFocus = true, // Focus à l'initialisation 
+  autoFocus = true, // Focus à l'initialisation
   onBlur,
   style = {},
   ...props
 }) {
   // Editeur
-  const editor = useMemo(() => withTags(withMentions(withReact(withHistory(createEditor())))), [])
+  const editor = useMemo(() => withLinks(withTags(withMentions(withReact(withHistory(createEditor()))))), [])
 
   // Valeur du contenu
   const [value, setValue] = useState(initialValue || [{ children: [{ text: '' }], type: 'paragraph' }])
@@ -66,22 +73,19 @@ export default function MyEditor({
   const [tagIndex, setTagIndex] = useState(0)
   const [tagSearch, setTagSearch] = useState('')
 
+
   // Fonctions de render
-  const renderElement = useCallback(props => <Element {...props} tags={tags} isPreview={isPreview} />, [tags, isPreview])
-  const renderLeaf = useCallback(props => <Leaf {...props} />, [])
+  const renderElement = useCallback((props) => <Element {...props} tags={tags} isPreview={isPreview} />, [tags, isPreview])
+  const renderLeaf = useCallback((props) => <Leaf {...props} />, [])
 
-  const users = mentions.filter((m) =>
-    m.firstName.toLowerCase().startsWith(mentionSearch.toLowerCase())
-  ).slice(0, 10)
+  const users = mentions.filter((m) => m.firstName.toLowerCase().startsWith(mentionSearch.toLowerCase())).slice(0, 10)
 
-  const availableTags = tags.filter((t) =>
-    t.value.toLowerCase().startsWith(tagSearch.toLowerCase())
-  ).slice(0, 10)
+  const availableTags = tags.filter((t) => t.value.toLowerCase().startsWith(tagSearch.toLowerCase())).slice(0, 10)
 
   const showButtons = !readOnly && !hideButtons
 
   const onKeyDown = useCallback(
-    event => {
+    (event) => {
       if (mentionTarget) {
         switch (event.key) {
           case 'ArrowDown':
@@ -139,7 +143,7 @@ export default function MyEditor({
         }
       }
     },
-    [mentionIndex, mentionSearch, mentionTarget, tagIndex, tagSearch, tagTarget]
+    [mentionIndex, mentionSearch, mentionTarget, tagIndex, tagSearch, tagTarget],
   )
 
   useEffect(() => {
@@ -151,7 +155,6 @@ export default function MyEditor({
       el.style.left = `${rect.left + window.pageXOffset}px`
     }
   }, [users.length, editor, mentionIndex, mentionSearch, mentionTarget])
-
 
   // useEffect(() => {
   //   if (tagTarget && availableTags.length > 0) {
@@ -203,7 +206,7 @@ export default function MyEditor({
       <Slate
         editor={editor}
         value={value}
-        onChange={value => {
+        onChange={(value) => {
           setValue(value)
           const { selection } = editor
 
@@ -245,26 +248,26 @@ export default function MyEditor({
           <div style={{
             // borderBottom: '1px #CCC solid',
             display: 'flex',
-            alignItems: 'center'
+            alignItems: 'center',
           }}>
-            {preview &&
+            {preview && (
               <div style={{
                 display: 'flex',
                 padding: '8px 12px',
                 height: '100%',
                 // minHeight: '47px',
                 borderRight: '1px #CCC solid',
-                alignItems: 'center'
+                alignItems: 'center',
               }}>
                 {preview}
               </div>
-            }
+            )}
             <div
               style={{
                 padding: '0px',
                 display: 'flex',
                 justifyContent: 'space-between',
-                alignItems: 'center'
+                alignItems: 'center',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -285,6 +288,9 @@ export default function MyEditor({
                     <BlockButton format="numbered-list">
                       <ListNumbered />
                     </BlockButton>
+                    <MarkButton format="link">
+                      <AddLinkButton format="link" />
+                    </MarkButton>
                   </>
                 )}
               </div>
@@ -300,7 +306,7 @@ export default function MyEditor({
           placeholder={placeholder}
           style={{
             padding: !readOnly && '4px',
-            minHeight: minHeight && `${minHeight}px`
+            minHeight: minHeight && `${minHeight}px`,
           }}
         />
         {mentionTarget && users.length > 0 && (
@@ -339,7 +345,7 @@ export default function MyEditor({
               padding: '3px',
               background: 'white',
               borderRadius: '4px',
-              display: 'flex'
+              display: 'flex',
             }}
             data-cy="tags-portal"
           >
@@ -375,8 +381,7 @@ const isBlockActive = (editor, format) => {
 
   const [match] = Editor.nodes(editor, {
     at: Editor.unhangRange(editor, selection),
-    match: n =>
-      !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === format,
+    match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === format,
   })
 
   return !!match
@@ -387,8 +392,7 @@ const toggleBlock = (editor, format) => {
   const isList = LIST_TYPES.includes(format)
 
   Transforms.unwrapNodes(editor, {
-    match: n =>
-      !Editor.isEditor(n) &&
+    match: (n) => !Editor.isEditor(n) &&
       SlateElement.isElement(n) &&
       LIST_TYPES.includes(n.type),
     split: true,
@@ -401,14 +405,14 @@ const toggleBlock = (editor, format) => {
   Transforms.setNodes(editor, newProperties)
 
   if (!isActive && isList) {
-    const block = { type: format, children: [] }
+    const block = { type: format, children: []}
     Transforms.wrapNodes(editor, block)
   }
 }
 
 const toggleMark = (editor, format) => {
   const isActive = isMarkActive(editor, format)
-
+  console.log('isActive', isActive)
   if (isActive) {
     Editor.removeMark(editor, format)
   } else {
@@ -423,9 +427,9 @@ const BlockButton = ({ format, children }) => {
   return (
     <Button
       style={{
-        background: isActive && '#eeeeee'
+        background: isActive && '#eeeeee',
       }}
-      onMouseDown={event => {
+      onMouseDown={(event) => {
         event.preventDefault()
         toggleBlock(editor, format)
       }}
@@ -441,10 +445,9 @@ const MarkButton = ({ format, children, className }) => {
   return (
     <Button
       style={{
-        background: isActive && '#eeeeee'
-
+        background: isActive && '#eeeeee',
       }}
-      onMouseDown={event => {
+      onMouseDown={(event) => {
         event.preventDefault()
         toggleMark(editor, format)
       }}
@@ -454,33 +457,91 @@ const MarkButton = ({ format, children, className }) => {
   )
 }
 
-const withMentions = editor => {
-  const { isInline, isVoid } = editor
+const withLinks = (editor) => {
+  const { isInline } = editor
 
-  editor.isInline = element => {
-    return element.type === 'mention' ? true : isInline(element)
-  }
-
-  editor.isVoid = element => {
-    return element.type === 'mention' ? true : isVoid(element)
-  }
+  editor.isInline = (element) => (element.type === 'link' ? true : isInline(element))
 
   return editor
 }
 
-const withTags = editor => {
+const withMentions = (editor) => {
+  const { isInline, isVoid } = editor
+
+  editor.isInline = (element) => (['mention'].includes(element.type) ? true : isInline(element))
+  editor.isVoid = (element) => (element.type === 'mention' ? true : isVoid(element))
+
+  return editor
+}
+
+const insertLink = (editor, url) => {
+  if (editor.selection) {
+    wrapLink(editor, url)
+  }
+}
+
+const unwrapLink = (editor) => {
+  Transforms.unwrapNodes(editor, {
+    match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === 'link',
+  })
+}
+
+const wrapLink = (editor, url) => {
+  const isActive = isMarkActive(editor, 'link')
+
+  if (isActive) {
+    unwrapLink(editor)
+  }
+
+  const { selection, insertBreak } = editor
+  const isCollapsed = selection && Range.isCollapsed(selection)
+
+  const link = {
+    type: 'link',
+    url,
+    children: [{ text: url }],
+  }
+
+  if (isCollapsed) {
+    Transforms.insertNodes(editor, link)
+  } else {
+    Transforms.wrapNodes(editor, link, { split: true })
+    Transforms.collapse(editor, { edge: 'end' })
+  }
+
+  editor.deleteForward()
+  editor.insertText(' ')
+  toggleMark(editor, 'link')
+}
+
+const AddLinkButton = ({ format }) => {
+  const editor = useSlate()
+  const isActive = isMarkActive(editor, format)
+
+  return (
+    <Button
+      onMouseDown={(event) => {
+        if (!isActive) {
+          event.preventDefault()
+          const url = window.prompt('Entrer l\'url du lien:')
+          if (!url) return
+          insertLink(editor, url)
+        }
+      }}
+    >
+      <LinkButton/>
+    </Button>
+  )
+}
+
+const withTags = (editor) => {
   const { isInline, isVoid, markableVoid } = editor
 
-  editor.isInline = element => {
-    return element.type === 'tag' ? true : isInline(element)
-  }
+  editor.isInline = (element) => (element.type === 'tag' ? true : isInline(element))
 
-  editor.isVoid = element => {
-    return element.type === 'tag' ? true : isVoid(element)
-  }
+  editor.isVoid = (element) => (element.type === 'tag' ? true : isVoid(element))
 
-  editor.markableVoid = (element) => (element.type === 'tag' || markableVoid(element))
-
+  editor.markableVoid = (element) => element.type === 'tag' || markableVoid(element)
 
   return editor
 }
@@ -523,6 +584,8 @@ const Element = (props) => {
       return <li {...attributes}>{children}</li>
     case 'numbered-list':
       return <ol style={{ listStyleType: 'decimal', listStylePosition: 'inside' }} {...attributes}>{children}</ol>
+    case 'link':
+      return <LinkComponent {...props}/>
     default:
       return <div {...attributes}>{children}</div>
   }
@@ -547,6 +610,15 @@ const Leaf = ({ attributes, children, leaf }) => {
 
   return <span {...attributes}>{children}</span>
 }
+
+const LinkComponent = ({ attributes, children, element }) => (
+  <a
+    {...attributes}
+    href={element.url}
+  >
+    {children}
+  </a>
+)
 
 const Mention = ({ attributes, children, element }) => {
   const selected = useSelected()
@@ -573,7 +645,9 @@ const Mention = ({ attributes, children, element }) => {
   )
 }
 
-const Tag = ({ attributes, children, element, tags = [], isPreview }) => {
+const Tag = ({
+  attributes, children, element, tags = [], isPreview,
+}) => {
   const selected = useSelected()
   const focused = useFocused()
   const found = tags.find((t) => `{${t.value}}` === element.children[0].text)
@@ -586,7 +660,7 @@ const Tag = ({ attributes, children, element, tags = [], isPreview }) => {
     borderRadius: '4px',
     backgroundColor: found ? '#cbf4ca' : '#f4caca',
     fontSize: '0.9em',
-    boxShadow: selected && focused ? '0 0 0 2px #B4D5FF' : 'none'
+    boxShadow: selected && focused ? '0 0 0 2px #B4D5FF' : 'none',
   }
 
   if (element.children[0].bold) {
@@ -607,7 +681,7 @@ const Tag = ({ attributes, children, element, tags = [], isPreview }) => {
       data-cy={`tag-${children}`}
       style={style}
     >
-      {(isPreview && found)
+      {isPreview && found
         ? found.currentText
         : element.children[0].text
       }

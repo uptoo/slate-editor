@@ -14,6 +14,7 @@ var _format_italic = _interopRequireDefault(require("./icons/format_italic"));
 var _format_underlined = _interopRequireDefault(require("./icons/format_underlined"));
 var _format_list_bulleted = _interopRequireDefault(require("./icons/format_list_bulleted"));
 var _format_list_numbered = _interopRequireDefault(require("./icons/format_list_numbered"));
+var _format_link = _interopRequireDefault(require("./icons/format_link"));
 var _excluded = ["initialValue", "onChange", "mentions", "onMention", "tags", "placeholder", "readOnly", "hideButtons", "minHeight", "maxHeight", "extra", "preview", "isPreview", "autoFocus", "onBlur", "style"];
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -81,7 +82,7 @@ function MyEditor(_ref) {
     props = _objectWithoutProperties(_ref, _excluded);
   // Editeur
   var editor = (0, _react.useMemo)(function () {
-    return withTags(withMentions((0, _slateReact.withReact)((0, _slateHistory.withHistory)((0, _slate.createEditor)()))));
+    return withLinks(withTags(withMentions((0, _slateReact.withReact)((0, _slateHistory.withHistory)((0, _slate.createEditor)())))));
   }, []);
 
   // Valeur du contenu
@@ -325,7 +326,11 @@ function MyEditor(_ref) {
     format: "bulleted-list"
   }, /*#__PURE__*/_react.default.createElement(_format_list_bulleted.default, null)), /*#__PURE__*/_react.default.createElement(BlockButton, {
     format: "numbered-list"
-  }, /*#__PURE__*/_react.default.createElement(_format_list_numbered.default, null)))), extra)), /*#__PURE__*/_react.default.createElement(_slateReact.Editable, {
+  }, /*#__PURE__*/_react.default.createElement(_format_list_numbered.default, null)), /*#__PURE__*/_react.default.createElement(MarkButton, {
+    format: "link"
+  }, /*#__PURE__*/_react.default.createElement(AddLinkButton, {
+    format: "link"
+  })))), extra)), /*#__PURE__*/_react.default.createElement(_slateReact.Editable, {
     readOnly: readOnly,
     renderElement: renderElement,
     renderLeaf: renderLeaf,
@@ -418,6 +423,7 @@ var toggleBlock = function toggleBlock(editor, format) {
 };
 var toggleMark = function toggleMark(editor, format) {
   var isActive = isMarkActive(editor, format);
+  console.log('isActive', isActive);
   if (isActive) {
     _slate.Editor.removeMark(editor, format);
   } else {
@@ -455,16 +461,79 @@ var MarkButton = function MarkButton(_ref3) {
     }
   }, children);
 };
+var withLinks = function withLinks(editor) {
+  var isInline = editor.isInline;
+  editor.isInline = function (element) {
+    return element.type === 'link' ? true : isInline(element);
+  };
+  return editor;
+};
 var withMentions = function withMentions(editor) {
   var isInline = editor.isInline,
     isVoid = editor.isVoid;
   editor.isInline = function (element) {
-    return element.type === 'mention' ? true : isInline(element);
+    return ['mention'].includes(element.type) ? true : isInline(element);
   };
   editor.isVoid = function (element) {
     return element.type === 'mention' ? true : isVoid(element);
   };
   return editor;
+};
+var insertLink = function insertLink(editor, url) {
+  if (editor.selection) {
+    wrapLink(editor, url);
+  }
+};
+var unwrapLink = function unwrapLink(editor) {
+  _slate.Transforms.unwrapNodes(editor, {
+    match: function match(n) {
+      return !_slate.Editor.isEditor(n) && _slate.Element.isElement(n) && n.type === 'link';
+    }
+  });
+};
+var wrapLink = function wrapLink(editor, url) {
+  var isActive = isMarkActive(editor, 'link');
+  if (isActive) {
+    unwrapLink(editor);
+  }
+  var selection = editor.selection,
+    insertBreak = editor.insertBreak;
+  var isCollapsed = selection && _slate.Range.isCollapsed(selection);
+  var link = {
+    type: 'link',
+    url: url,
+    children: [{
+      text: url
+    }]
+  };
+  if (isCollapsed) {
+    _slate.Transforms.insertNodes(editor, link);
+  } else {
+    _slate.Transforms.wrapNodes(editor, link, {
+      split: true
+    });
+    _slate.Transforms.collapse(editor, {
+      edge: 'end'
+    });
+  }
+  editor.deleteForward();
+  editor.insertText(' ');
+  toggleMark(editor, 'link');
+};
+var AddLinkButton = function AddLinkButton(_ref4) {
+  var format = _ref4.format;
+  var editor = (0, _slateReact.useSlate)();
+  var isActive = isMarkActive(editor, format);
+  return /*#__PURE__*/_react.default.createElement(Button, {
+    onMouseDown: function onMouseDown(event) {
+      if (!isActive) {
+        event.preventDefault();
+        var url = window.prompt('Entrer l\'url du lien:');
+        if (!url) return;
+        insertLink(editor, url);
+      }
+    }
+  }, /*#__PURE__*/_react.default.createElement(_format_link.default, null));
 };
 var withTags = function withTags(editor) {
   var isInline = editor.isInline,
@@ -528,14 +597,16 @@ var Element = function Element(props) {
           listStylePosition: 'inside'
         }
       }, attributes), children);
+    case 'link':
+      return /*#__PURE__*/_react.default.createElement(LinkComponent, props);
     default:
       return /*#__PURE__*/_react.default.createElement("div", attributes, children);
   }
 };
-var Leaf = function Leaf(_ref4) {
-  var attributes = _ref4.attributes,
-    children = _ref4.children,
-    leaf = _ref4.leaf;
+var Leaf = function Leaf(_ref5) {
+  var attributes = _ref5.attributes,
+    children = _ref5.children,
+    leaf = _ref5.leaf;
   if (leaf.bold) {
     children = /*#__PURE__*/_react.default.createElement("strong", null, children);
   }
@@ -550,35 +621,42 @@ var Leaf = function Leaf(_ref4) {
   }
   return /*#__PURE__*/_react.default.createElement("span", attributes, children);
 };
-var Mention = function Mention(_ref5) {
-  var attributes = _ref5.attributes,
-    children = _ref5.children,
-    element = _ref5.element;
+var LinkComponent = function LinkComponent(_ref6) {
+  var attributes = _ref6.attributes,
+    children = _ref6.children,
+    element = _ref6.element;
+  return /*#__PURE__*/_react.default.createElement("a", _extends({}, attributes, {
+    href: element.url
+  }), children);
+};
+var Mention = function Mention(_ref7) {
+  var attributes = _ref7.attributes,
+    children = _ref7.children,
+    element = _ref7.element;
   var selected = (0, _slateReact.useSelected)();
   var focused = (0, _slateReact.useFocused)();
   return /*#__PURE__*/_react.default.createElement("span", _extends({}, attributes, {
     contentEditable: false,
     "data-cy": "mention-".concat(element.user._id),
     style: {
-   // padding: '3px 3px 2px',
-   margin: '0 1px',
-   verticalAlign: 'baseline',
-   display: 'inline-block',
-   // borderRadius: '4px',
-   // backgroundColor: '#E5F6FE',
-   fontSize: '1em',
-   color:'#00A0FE' 
-   // boxShadow: selected && focused ? '0 0 0 2px #B4D5FF' : 'none'
+      padding: '3px 3px 2px',
+      margin: '0 1px',
+      verticalAlign: 'baseline',
+      display: 'inline-block',
+      borderRadius: '4px',
+      backgroundColor: '#eee',
+      fontSize: '0.9em',
+      boxShadow: selected && focused ? '0 0 0 2px #B4D5FF' : 'none'
     }
   }), "@", element.user.firstName, " ", element.user.lastName, children);
 };
-var Tag = function Tag(_ref6) {
-  var attributes = _ref6.attributes,
-    children = _ref6.children,
-    element = _ref6.element,
-    _ref6$tags = _ref6.tags,
-    tags = _ref6$tags === void 0 ? [] : _ref6$tags,
-    isPreview = _ref6.isPreview;
+var Tag = function Tag(_ref8) {
+  var attributes = _ref8.attributes,
+    children = _ref8.children,
+    element = _ref8.element,
+    _ref8$tags = _ref8.tags,
+    tags = _ref8$tags === void 0 ? [] : _ref8$tags,
+    isPreview = _ref8.isPreview;
   var selected = (0, _slateReact.useSelected)();
   var focused = (0, _slateReact.useFocused)();
   var found = tags.find(function (t) {
