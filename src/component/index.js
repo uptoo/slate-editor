@@ -615,6 +615,8 @@ const LinkComponent = ({ attributes, children, element }) => (
   <a
     {...attributes}
     href={element.url}
+    target='_blank'
+    rel='noreferrer noopener'
   >
     {children}
   </a>
