@@ -137,7 +137,8 @@ function MyEditor(_ref) {
     return /*#__PURE__*/_react.default.createElement(Leaf, props);
   }, []);
   var users = mentions.filter(function (m) {
-    return m.firstName.toLowerCase().startsWith(mentionSearch.toLowerCase());
+    var _m$firstName;
+    return (_m$firstName = m.firstName) === null || _m$firstName === void 0 ? void 0 : _m$firstName.toLowerCase().startsWith(mentionSearch.toLowerCase());
   }).slice(0, 10);
   var availableTags = tags.filter(function (t) {
     return t.value.toLowerCase().startsWith(tagSearch.toLowerCase());
