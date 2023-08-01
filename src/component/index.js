@@ -61,15 +61,6 @@ export default function MyEditor({
   // Valeur du contenu
   const [value, setValue] = useState(initialValue || [{ children: [{ text: '' }], type: 'paragraph' }])
 
-  useEffect(() => {
-    console.log('DANS LE USE EFFECT', initialValue)
-    if (initialValue && JSON.stringify(initialValue) !== JSON.stringify(value)) {
-      console.log('DANS LA BOUCLE')
-      setValue(initialValue)
-      editor.children = initialValue
-    }
-  }, [initialValue])
-
   // Pour les mentions
   const mentionRef = useRef()
   const [mentionTarget, setMentionTarget] = useState()
@@ -210,6 +201,7 @@ export default function MyEditor({
     }
   }, [props.value])
 
+  editor.children = value
   return (
     <div onBlur={onBlur}>
       <Slate
