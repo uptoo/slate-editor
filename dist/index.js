@@ -96,7 +96,9 @@ function MyEditor(_ref) {
     value = _useState2[0],
     setValue = _useState2[1];
   (0, _react.useEffect)(function () {
-    if (initialValue && JSON.stringify(props.value) !== JSON.stringify(value)) {
+    console.log('DANS LE USE EFFECT', initialValue);
+    if (initialValue && JSON.stringify(initialValue) !== JSON.stringify(value)) {
+      console.log('DANS LA BOUCLE');
       setValue(initialValue);
     }
   }, [initialValue]);
