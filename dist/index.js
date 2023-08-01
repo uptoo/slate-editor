@@ -14,7 +14,8 @@ var _format_italic = _interopRequireDefault(require("./icons/format_italic"));
 var _format_underlined = _interopRequireDefault(require("./icons/format_underlined"));
 var _format_list_bulleted = _interopRequireDefault(require("./icons/format_list_bulleted"));
 var _format_list_numbered = _interopRequireDefault(require("./icons/format_list_numbered"));
-var _excluded = ["initialValue", "onChange", "mentions", "onMention", "tags", "placeholder", "readOnly", "hideButtons", "minHeight", "maxHeight", "extra", "preview", "isPreview", "isFocus", "onBlur", "style"];
+var _format_link = _interopRequireDefault(require("./icons/format_link"));
+var _excluded = ["initialValue", "onChange", "mentions", "onMention", "tags", "placeholder", "readOnly", "hideButtons", "minHeight", "maxHeight", "extra", "preview", "isPreview", "autoFocus", "onBlur", "style"];
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -22,8 +23,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i.return && (_r = _i.return(), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0) { ; } } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i.return && (_r = _i.return(), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
@@ -73,15 +74,15 @@ function MyEditor(_ref) {
     extra = _ref.extra,
     preview = _ref.preview,
     isPreview = _ref.isPreview,
-    _ref$isFocus = _ref.isFocus,
-    isFocus = _ref$isFocus === void 0 ? true : _ref$isFocus,
+    _ref$autoFocus = _ref.autoFocus,
+    autoFocus = _ref$autoFocus === void 0 ? true : _ref$autoFocus,
     onBlur = _ref.onBlur,
     _ref$style = _ref.style,
     style = _ref$style === void 0 ? {} : _ref$style,
     props = _objectWithoutProperties(_ref, _excluded);
   // Editeur
   var editor = (0, _react.useMemo)(function () {
-    return withTags(withMentions((0, _slateReact.withReact)((0, _slateHistory.withHistory)((0, _slate.createEditor)()))));
+    return withLinks(withTags(withMentions((0, _slateReact.withReact)((0, _slateHistory.withHistory)((0, _slate.createEditor)())))));
   }, []);
 
   // Valeur du contenu
@@ -136,7 +137,8 @@ function MyEditor(_ref) {
     return /*#__PURE__*/_react.default.createElement(Leaf, props);
   }, []);
   var users = mentions.filter(function (m) {
-    return m.firstName.toLowerCase().startsWith(mentionSearch.toLowerCase());
+    var _m$firstName;
+    return (_m$firstName = m.firstName) === null || _m$firstName === void 0 ? void 0 : _m$firstName.toLowerCase().startsWith(mentionSearch.toLowerCase());
   }).slice(0, 10);
   var availableTags = tags.filter(function (t) {
     return t.value.toLowerCase().startsWith(tagSearch.toLowerCase());
@@ -220,12 +222,12 @@ function MyEditor(_ref) {
   // }, [availableTags.length, editor, tagIndex, tagSearch, tagTarget])
 
   (0, _react.useEffect)(function () {
-    if (isFocus) {
+    if (autoFocus) {
       _slateReact.ReactEditor.focus(editor);
     }
     var element = document.querySelector('[data-slate-editor="true"]');
     if (element !== null && element !== void 0 && element.style) {
-      element.style.minHeight = "".concat(minHeight, "px");
+      // element.style.minHeight = `${minHeight}px`
       element.style.overflowY = 'auto';
       element.style.overflowX = 'hidden';
       if (maxHeight) {
@@ -249,13 +251,6 @@ function MyEditor(_ref) {
     }
   }, [props.value]);
   return /*#__PURE__*/_react.default.createElement("div", {
-    style: _objectSpread({
-      minHeight: minHeight + 85,
-      border: !readOnly && '1px #CCC solid',
-      background: !readOnly && '#fff',
-      borderRadius: '10px',
-      padding: '8px'
-    }, style),
     onBlur: onBlur
   }, /*#__PURE__*/_react.default.createElement(_slateReact.Slate, {
     editor: editor,
@@ -306,13 +301,13 @@ function MyEditor(_ref) {
       display: 'flex',
       padding: '8px 12px',
       height: '100%',
-      minHeight: '47px',
+      // minHeight: '47px',
       borderRight: '1px #CCC solid',
       alignItems: 'center'
     }
   }, preview), /*#__PURE__*/_react.default.createElement("div", {
     style: {
-      padding: '8px',
+      padding: '0px',
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center'
@@ -332,14 +327,19 @@ function MyEditor(_ref) {
     format: "bulleted-list"
   }, /*#__PURE__*/_react.default.createElement(_format_list_bulleted.default, null)), /*#__PURE__*/_react.default.createElement(BlockButton, {
     format: "numbered-list"
-  }, /*#__PURE__*/_react.default.createElement(_format_list_numbered.default, null)))), extra)), /*#__PURE__*/_react.default.createElement(_slateReact.Editable, {
+  }, /*#__PURE__*/_react.default.createElement(_format_list_numbered.default, null)), /*#__PURE__*/_react.default.createElement(MarkButton, {
+    format: "link"
+  }, /*#__PURE__*/_react.default.createElement(AddLinkButton, {
+    format: "link"
+  })))), extra)), /*#__PURE__*/_react.default.createElement(_slateReact.Editable, {
     readOnly: readOnly,
     renderElement: renderElement,
     renderLeaf: renderLeaf,
     onKeyDown: onKeyDown,
     placeholder: placeholder,
     style: {
-      padding: !readOnly && '0em 1em'
+      padding: !readOnly && '4px',
+      minHeight: minHeight && "".concat(minHeight, "px")
     }
   }), mentionTarget && users.length > 0 && /*#__PURE__*/_react.default.createElement("div", {
     ref: mentionRef,
@@ -424,6 +424,7 @@ var toggleBlock = function toggleBlock(editor, format) {
 };
 var toggleMark = function toggleMark(editor, format) {
   var isActive = isMarkActive(editor, format);
+  console.log('isActive', isActive);
   if (isActive) {
     _slate.Editor.removeMark(editor, format);
   } else {
@@ -461,16 +462,79 @@ var MarkButton = function MarkButton(_ref3) {
     }
   }, children);
 };
+var withLinks = function withLinks(editor) {
+  var isInline = editor.isInline;
+  editor.isInline = function (element) {
+    return element.type === 'link' ? true : isInline(element);
+  };
+  return editor;
+};
 var withMentions = function withMentions(editor) {
   var isInline = editor.isInline,
     isVoid = editor.isVoid;
   editor.isInline = function (element) {
-    return element.type === 'mention' ? true : isInline(element);
+    return ['mention'].includes(element.type) ? true : isInline(element);
   };
   editor.isVoid = function (element) {
     return element.type === 'mention' ? true : isVoid(element);
   };
   return editor;
+};
+var insertLink = function insertLink(editor, url) {
+  if (editor.selection) {
+    wrapLink(editor, url);
+  }
+};
+var unwrapLink = function unwrapLink(editor) {
+  _slate.Transforms.unwrapNodes(editor, {
+    match: function match(n) {
+      return !_slate.Editor.isEditor(n) && _slate.Element.isElement(n) && n.type === 'link';
+    }
+  });
+};
+var wrapLink = function wrapLink(editor, url) {
+  var isActive = isMarkActive(editor, 'link');
+  if (isActive) {
+    unwrapLink(editor);
+  }
+  var selection = editor.selection,
+    insertBreak = editor.insertBreak;
+  var isCollapsed = selection && _slate.Range.isCollapsed(selection);
+  var link = {
+    type: 'link',
+    url: url,
+    children: [{
+      text: url
+    }]
+  };
+  if (isCollapsed) {
+    _slate.Transforms.insertNodes(editor, link);
+  } else {
+    _slate.Transforms.wrapNodes(editor, link, {
+      split: true
+    });
+    _slate.Transforms.collapse(editor, {
+      edge: 'end'
+    });
+  }
+  editor.deleteForward();
+  editor.insertText(' ');
+  toggleMark(editor, 'link');
+};
+var AddLinkButton = function AddLinkButton(_ref4) {
+  var format = _ref4.format;
+  var editor = (0, _slateReact.useSlate)();
+  var isActive = isMarkActive(editor, format);
+  return /*#__PURE__*/_react.default.createElement(Button, {
+    onMouseDown: function onMouseDown(event) {
+      if (!isActive) {
+        event.preventDefault();
+        var url = window.prompt('Entrer l\'url du lien:');
+        if (!url) return;
+        insertLink(editor, url);
+      }
+    }
+  }, /*#__PURE__*/_react.default.createElement(_format_link.default, null));
 };
 var withTags = function withTags(editor) {
   var isInline = editor.isInline,
@@ -534,14 +598,16 @@ var Element = function Element(props) {
           listStylePosition: 'inside'
         }
       }, attributes), children);
+    case 'link':
+      return /*#__PURE__*/_react.default.createElement(LinkComponent, props);
     default:
       return /*#__PURE__*/_react.default.createElement("div", attributes, children);
   }
 };
-var Leaf = function Leaf(_ref4) {
-  var attributes = _ref4.attributes,
-    children = _ref4.children,
-    leaf = _ref4.leaf;
+var Leaf = function Leaf(_ref5) {
+  var attributes = _ref5.attributes,
+    children = _ref5.children,
+    leaf = _ref5.leaf;
   if (leaf.bold) {
     children = /*#__PURE__*/_react.default.createElement("strong", null, children);
   }
@@ -556,10 +622,20 @@ var Leaf = function Leaf(_ref4) {
   }
   return /*#__PURE__*/_react.default.createElement("span", attributes, children);
 };
-var Mention = function Mention(_ref5) {
-  var attributes = _ref5.attributes,
-    children = _ref5.children,
-    element = _ref5.element;
+var LinkComponent = function LinkComponent(_ref6) {
+  var attributes = _ref6.attributes,
+    children = _ref6.children,
+    element = _ref6.element;
+  return /*#__PURE__*/_react.default.createElement("a", _extends({}, attributes, {
+    href: element.url,
+    target: "_blank",
+    rel: "noreferrer noopener"
+  }), children);
+};
+var Mention = function Mention(_ref7) {
+  var attributes = _ref7.attributes,
+    children = _ref7.children,
+    element = _ref7.element;
   var selected = (0, _slateReact.useSelected)();
   var focused = (0, _slateReact.useFocused)();
   return /*#__PURE__*/_react.default.createElement("span", _extends({}, attributes, {
@@ -577,13 +653,13 @@ var Mention = function Mention(_ref5) {
     }
   }), "@", element.user.firstName, " ", element.user.lastName, children);
 };
-var Tag = function Tag(_ref6) {
-  var attributes = _ref6.attributes,
-    children = _ref6.children,
-    element = _ref6.element,
-    _ref6$tags = _ref6.tags,
-    tags = _ref6$tags === void 0 ? [] : _ref6$tags,
-    isPreview = _ref6.isPreview;
+var Tag = function Tag(_ref8) {
+  var attributes = _ref8.attributes,
+    children = _ref8.children,
+    element = _ref8.element,
+    _ref8$tags = _ref8.tags,
+    tags = _ref8$tags === void 0 ? [] : _ref8$tags,
+    isPreview = _ref8.isPreview;
   var selected = (0, _slateReact.useSelected)();
   var focused = (0, _slateReact.useFocused)();
   var found = tags.find(function (t) {
