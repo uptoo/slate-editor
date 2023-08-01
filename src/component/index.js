@@ -196,7 +196,7 @@ export default function MyEditor({
   }, [value])
 
   useEffect(() => {
-    if (onChange && props.value && JSON.stringify(props.value) !== JSON.stringify(value)) {
+    if (props.value && JSON.stringify(props.value) !== JSON.stringify(value)) {
       setValue(props.value)
     }
   }, [props.value])
