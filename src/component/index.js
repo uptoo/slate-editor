@@ -78,7 +78,7 @@ export default function MyEditor({
   const renderElement = useCallback((props) => <Element {...props} tags={tags} isPreview={isPreview} />, [tags, isPreview])
   const renderLeaf = useCallback((props) => <Leaf {...props} />, [])
 
-  const users = mentions.filter((m) => m.firstName.toLowerCase().startsWith(mentionSearch.toLowerCase())).slice(0, 10)
+  const users = mentions.filter((m) => m.firstName?.toLowerCase().startsWith(mentionSearch.toLowerCase())).slice(0, 10)
 
   const availableTags = tags.filter((t) => t.value.toLowerCase().startsWith(tagSearch.toLowerCase())).slice(0, 10)
 
@@ -201,6 +201,7 @@ export default function MyEditor({
     }
   }, [props.value])
 
+  editor.children = value
   return (
     <div onBlur={onBlur}>
       <Slate
@@ -615,6 +616,8 @@ const LinkComponent = ({ attributes, children, element }) => (
   <a
     {...attributes}
     href={element.url}
+    target='_blank'
+    rel='noreferrer noopener'
   >
     {children}
   </a>

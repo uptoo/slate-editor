@@ -137,7 +137,8 @@ function MyEditor(_ref) {
     return /*#__PURE__*/_react.default.createElement(Leaf, props);
   }, []);
   var users = mentions.filter(function (m) {
-    return m.firstName.toLowerCase().startsWith(mentionSearch.toLowerCase());
+    var _m$firstName;
+    return (_m$firstName = m.firstName) === null || _m$firstName === void 0 ? void 0 : _m$firstName.toLowerCase().startsWith(mentionSearch.toLowerCase());
   }).slice(0, 10);
   var availableTags = tags.filter(function (t) {
     return t.value.toLowerCase().startsWith(tagSearch.toLowerCase());
@@ -249,6 +250,7 @@ function MyEditor(_ref) {
       setValue(props.value);
     }
   }, [props.value]);
+  editor.children = value;
   return /*#__PURE__*/_react.default.createElement("div", {
     onBlur: onBlur
   }, /*#__PURE__*/_react.default.createElement(_slateReact.Slate, {
@@ -626,7 +628,9 @@ var LinkComponent = function LinkComponent(_ref6) {
     children = _ref6.children,
     element = _ref6.element;
   return /*#__PURE__*/_react.default.createElement("a", _extends({}, attributes, {
-    href: element.url
+    href: element.url,
+    target: "_blank",
+    rel: "noreferrer noopener"
   }), children);
 };
 var Mention = function Mention(_ref7) {
