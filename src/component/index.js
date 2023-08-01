@@ -66,6 +66,7 @@ export default function MyEditor({
     if (initialValue && JSON.stringify(initialValue) !== JSON.stringify(value)) {
       console.log('DANS LA BOUCLE')
       setValue(initialValue)
+      editor.children = initialValue
     }
   }, [initialValue])
 
