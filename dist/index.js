@@ -95,14 +95,6 @@ function MyEditor(_ref) {
     _useState2 = _slicedToArray(_useState, 2),
     value = _useState2[0],
     setValue = _useState2[1];
-  (0, _react.useEffect)(function () {
-    console.log('DANS LE USE EFFECT', initialValue);
-    if (initialValue && JSON.stringify(initialValue) !== JSON.stringify(value)) {
-      console.log('DANS LA BOUCLE');
-      setValue(initialValue);
-      editor.children = initialValue;
-    }
-  }, [initialValue]);
 
   // Pour les mentions
   var mentionRef = (0, _react.useRef)();
@@ -258,6 +250,7 @@ function MyEditor(_ref) {
       setValue(props.value);
     }
   }, [props.value]);
+  editor.children = value;
   return /*#__PURE__*/_react.default.createElement("div", {
     onBlur: onBlur
   }, /*#__PURE__*/_react.default.createElement(_slateReact.Slate, {
