@@ -62,7 +62,9 @@ export default function MyEditor({
   const [value, setValue] = useState(initialValue || [{ children: [{ text: '' }], type: 'paragraph' }])
 
   useEffect(() => {
-    if (initialValue && JSON.stringify(props.value) !== JSON.stringify(value)) {
+    console.log('DANS LE USE EFFECT', initialValue)
+    if (initialValue && JSON.stringify(initialValue) !== JSON.stringify(value)) {
+      console.log('DANS LA BOUCLE')
       setValue(initialValue)
     }
   }, [initialValue])
