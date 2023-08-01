@@ -54,6 +54,10 @@ export default function MyEditor({
   // Valeur du contenu
   const [value, setValue] = useState(initialValue || [{ children: [{ text: '' }], type: 'paragraph' }])
 
+  useEffect(() => {
+    setValue(initialValue)
+  }, [initialValue])
+
   // Pour les mentions
   const mentionRef = useRef()
   const [mentionTarget, setMentionTarget] = useState()
