@@ -62,7 +62,9 @@ export default function MyEditor({
   const [value, setValue] = useState(initialValue || [{ children: [{ text: '' }], type: 'paragraph' }])
 
   useEffect(() => {
-    setValue(initialValue)
+    if (initialValue && JSON.stringify(props.value) !== JSON.stringify(value)) {
+      setValue(initialValue)
+    }
   }, [initialValue])
 
   // Pour les mentions
