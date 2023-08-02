@@ -56,7 +56,7 @@ export default function MyEditor({
   ...props
 }) {
   // Editeur
-  const editor = useState(() => withLinks(withTags(withMentions(withReact(withHistory(createEditor()))))), [])
+  const editor = useMemo(() => withLinks(withTags(withMentions(withReact(withHistory(createEditor()))))), [])
 
   // Valeur du contenu
   const [value, setValue] = useState(initialValue || [{ children: [{ text: '' }], type: 'paragraph' }])
