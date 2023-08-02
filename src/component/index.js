@@ -56,7 +56,7 @@ export default function MyEditor({
   ...props
 }) {
   // Editeur
-  const editor = useMemo(() => withLinks(withTags(withMentions(withReact(withHistory(createEditor()))))), [])
+  const editor = useState(() => withLinks(withTags(withMentions(withReact(withHistory(createEditor()))))), [])
 
   // Valeur du contenu
   const [value, setValue] = useState(initialValue || [{ children: [{ text: '' }], type: 'paragraph' }])
@@ -406,7 +406,7 @@ const toggleBlock = (editor, format) => {
   Transforms.setNodes(editor, newProperties)
 
   if (!isActive && isList) {
-    const block = { type: format, children: []}
+    const block = { type: format, children: [] }
     Transforms.wrapNodes(editor, block)
   }
 }
@@ -462,7 +462,7 @@ const withLinks = (editor) => {
   const { isInline } = editor
 
   editor.isInline = (element) => (element.type === 'link' ? true : isInline(element))
- 
+
   return editor
 }
 
@@ -530,7 +530,7 @@ const AddLinkButton = ({ format }) => {
         }
       }}
     >
-      <LinkButton/>
+      <LinkButton />
     </Button>
   )
 }
@@ -586,7 +586,7 @@ const Element = (props) => {
     case 'numbered-list':
       return <ol style={{ listStyleType: 'decimal', listStylePosition: 'inside' }} {...attributes}>{children}</ol>
     case 'link':
-      return <LinkComponent {...props}/>
+      return <LinkComponent {...props} />
     default:
       return <div {...attributes}>{children}</div>
   }
