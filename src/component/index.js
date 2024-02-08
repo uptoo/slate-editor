@@ -142,6 +142,30 @@ export default function MyEditor({
           default:
         }
       }
+
+      if (!event.ctrlKey) {
+        return
+      }
+
+      switch (event.key) {
+        // When "B" is pressed, bold the text in the selection.
+        case 'b': {
+          event.preventDefault()
+          Editor.addMark(editor, 'bold', true)
+          break
+        }
+        case 'u': {
+          event.preventDefault()
+          Editor.addMark(editor, 'underline', true)
+          break
+        }
+        case 'i': {
+          event.preventDefault()
+          Editor.addMark(editor, 'italic', true)
+          break
+        }
+        default: break
+      }
     },
     [mentionIndex, mentionSearch, mentionTarget, tagIndex, tagSearch, tagTarget],
   )
