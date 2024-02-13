@@ -56,7 +56,6 @@ export default function MyEditor({
   id,
   ...props
 }) {
-  
   // Editeur
   const editor = useMemo(() => withLinks(withTags(withMentions(withReact(withHistory(createEditor()))))), [])
 
