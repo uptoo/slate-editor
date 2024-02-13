@@ -53,6 +53,7 @@ export default function MyEditor({
   autoFocus = true, // Focus à l'initialisation
   onBlur,
   style = {},
+  id,
   ...props
 }) {
   // Editeur
@@ -205,7 +206,7 @@ export default function MyEditor({
         element.style.maxHeight = `${maxHeight}px`
       }
     }
-  }, [])
+  }, [id])
 
   useEffect(() => {
     if (readOnly) {
