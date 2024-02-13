@@ -56,6 +56,7 @@ function MyEditor(_ref) {
     // Focus à l'initialisation
     onBlur,
     style = {},
+    id,
     ...props
   } = _ref;
   // Editeur
@@ -209,7 +210,7 @@ function MyEditor(_ref) {
         element.style.maxHeight = "".concat(maxHeight, "px");
       }
     }
-  }, []);
+  }, [id]);
   (0, _react.useEffect)(() => {
     if (readOnly) {
       setValue(readOnly);
