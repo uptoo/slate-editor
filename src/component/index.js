@@ -353,9 +353,19 @@ export default function MyEditor({
               <div
                 key={user._id}
                 style={{
+                  cursor: 'pointer',
                   padding: '1px 3px',
                   borderRadius: '3px',
                   background: i === mentionIndex ? '#B4D5FF' : 'transparent',
+                }}
+                onMouseEnter={() => setMentionIndex(i)}
+                onClick={() => {
+                  Transforms.select(editor, mentionTarget)
+                  insertMention(editor, user)
+                  if (onMention) {
+                    onMention(user)
+                  }
+                  setMentionTarget(null)
                 }}
               >
                 {user.firstName} {user.lastName}
