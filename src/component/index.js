@@ -53,6 +53,7 @@ export default function MyEditor({
   autoFocus = true, // Focus à l'initialisation
   onBlur,
   style = {},
+  id,
   ...props
 }) {
   // Editeur
@@ -151,17 +152,17 @@ export default function MyEditor({
         // When "B" is pressed, bold the text in the selection.
         case 'b': {
           event.preventDefault()
-          Editor.addMark(editor, 'bold', true)
+          toggleMark(editor, 'bold')
           break
         }
         case 'u': {
           event.preventDefault()
-          Editor.addMark(editor, 'underline', true)
+          toggleMark(editor, 'underline')
           break
         }
         case 'i': {
           event.preventDefault()
-          Editor.addMark(editor, 'italic', true)
+          toggleMark(editor, 'italic')
           break
         }
         default: break
@@ -205,7 +206,7 @@ export default function MyEditor({
         element.style.maxHeight = `${maxHeight}px`
       }
     }
-  }, [])
+  }, [id])
 
   useEffect(() => {
     if (readOnly) {
